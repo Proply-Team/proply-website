@@ -1,10 +1,8 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-const Landing = () => {
+export const LayoutComponent = () => {
   return (
     <Outlet />
   )
 }
-
-export default Landing
