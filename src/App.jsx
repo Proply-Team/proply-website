@@ -1,23 +1,20 @@
 import { useState } from 'react'
-import './App.css'
-import HeaderComponent from './components/Header.component'
-import FooterComponent from './components/Footer.component'
-import NavbarComponent from './components/Navbar.component'
-import { Outlet } from 'react-router-dom';
+// import './App.css'
+import { useSelector } from 'react-redux';
+import Login from './pages/Login.page';
+import Dashboard from './pages/Dashboard.page';
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   return (
-    <div style={{flex:1}}>
-      <NavbarComponent />
-      <main>
-        <HeaderComponent />
-        <Outlet />
-        <FooterComponent />
-      </main>
-    </div>
+    <>
+    {isAuthenticated?
+    <Dashboard />
+    :
+    <Login /> }
+    </>
   )
 }
 
