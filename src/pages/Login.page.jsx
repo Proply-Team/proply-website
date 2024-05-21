@@ -1,118 +1,102 @@
-import React from 'react'
-import { useRef,useState,useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { useLoginMutation } from '../redux/authApiSlice'
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout } from '../redux/authSlice';
+// import {useNavigate} from 'react-router-dom';
+import {useForm} from "react-hook-form";
+import * as z from "zod";
+import {zodResolver} from "@hookform/resolvers/zod";
+import { useEffect } from 'react';
+import { useState } from 'react';
 import logo from '../assets/react.svg'
 
-const Login = () => {
-  const userRef = useRef()
-  const errorRef = useRef()
-  const [email,setEmail] = useState('')
-  const [password,setPassword] = useState('')
-  const [errorMessage,setErrorMessage] = useState('')
-  const navigate = useNavigate()
+const schema =z.object({
+    email: z.string().email(),
+    password: z.string().min(8,"Password has to be more than 8 characters")
+})
 
-  const [login, { isLoading }] = useLoginMutation()
-  const dispatch = useDispatch()
+function Login() {
+    const { isAuthenticated, user } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+
+    const handleLogin = () => {
+    dispatch(login(userData));
+  };
+
+    const handleLogout = () => {
+        dispatch(logout());
+    };
+
+    const {
+        register,
+        handleSubmit,
+        formState: {errors, isValid},
+    }=useForm({
+        mode: "onChange",
+        resolver:zodResolver(schema),
+    });
 
 
-  useEffect(()=>{
-    userRef.current.focus()
-  },[])
-
-  useEffect(()=>{
-    setErrorMessage('')
-  },[email,password])
-
-  const handleSubmit = async (e) =>{
-    e.preventDefault()
-    try {
-      const userData = await login ({email,password}).unwrap()
-      dispatch(setCredentials({...userData,email}))
-      setEmail('')
-      setPassword('')
-      navigate('/app')
-    } catch (error) {
-      if(!error?.response) {
-        setErrorMessage('No Server Response')
-      } else if (error.response?.status === 400) {
-        setErrorMessage('Missing Email or Password')
-      } else if (error.response?.status === 401) {
-        setErrorMessage('Unauthorized')
-      } else {
-        setErrorMessage('Login Failed')
-      }
-      errorRef.current.focus();
-    }
-  }
-
-  const handleEmailInput = e => setEmail(e.target.value)
-  const handlePassInput = e => setPassword(e.target.value)
-
-  return (
+    console.log(errors);
+    const onSubmit = async (data) => {
+        const userData = { email: data.email, password:data.password };
     
-    isLoading? <p>...</p> :
+    // const response = await axios.post('/api/auth/login',data);
+    // try {
+    //     const response = await authService.login (data);
+    //     console.log(response);
+    //     if (response && response.statusCode === 200) {
+    //         const {token,userId, roles} = response.data;
+    //         sessionStorage.setItem('token', token);
+    //         sessionStorage.setItem('userId', userId);
+    //         sessionStorage.setItem('roles', JSON.stringify(roles));
+    //         navigate("/app")
+    //     }
+        if (data.email==="admin@gmail.com" && data.password==="12345678") {
+            dispatch(login(userData));
+            // navigate("/app")
+        }
+    // } catch (error) {
+    //     console.log(error);
+    }
+
+
+
+return(
     <>
-          <div
-        className="container d-flex mx-auto justify-content-center align-items-center"
-        style={{ minHeight: "80vh" }}
-      >
-        <div className="shadow-lg rounded-4" style={{ width: 500 }}>
-
-    <section className='login'>
-            <p ref={errorRef} >{errorMessage}</p>
-
-    <form onSubmit={handleSubmit}className="p-4">
-            <div className="row mt-4 mb-3">
-              <div className="col text-center">
-                <img
-                  src={logo}
-                  alt="login"
-                  className="img-fluid"
-                  style={{ height: 200 }}
-                />
-              </div>
-            </div>
-            <h2 className="text-center">Log In</h2>
-            <div className="mb-3">
-    <label htmlFor="email">Email:</label>
-    <input className="form-control rounded-3 border-0 border-bottom"
-        type="text"
-        id="email"
-        ref={userRef}
-        value={email}
-        onChange={handleEmailInput}
-        autoComplete="off"
-        required
-    />
-            </div>
-            <div className="mb-3">
-
-    <label htmlFor="password">Password:</label>
-    <input className="form-control rounded-3 border-0 border-bottom"
-        type="password"
-        id="password"
-        onChange={handlePassInput}
-        value={password}
-        required
-    />
-            </div>
-            <button
-              type="submit"
-              className="btn btn-primary mt-4 w-100"
-            >
-              Login
-            </button>
-</form>
-</section>
-</div>
-</div>
-</>
+    <div className="container d-flex justify-content-center align-items-center" style={{minHeight: "80vh", marginTop:50}}>
+        <div className="shadow-lg rounded-4" style={{width: 500}}>
+            <form onSubmit={handleSubmit(onSubmit)} className="p-4 text-left">
+                <div className="mt-4 mb-3 ">
+                    <div className="row text-center ">
+                        <img src={logo} alt="login" className="img-fluid " style={{height:150, marginBottom:20}}/>
+                    </div>
+                    <h2 className="text-center">Log In</h2>
+                    <div className="mb-3">
+                        <label htmlFor="email">Email</label>
+                        <input {...register("email")}
+                         type="text" name="email" id="email" className={`form-control rounded-3 border-0 border-bottom ${errors.email && "is-invalid"}`}/>
+                        {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
+                    </div>
+                    <div className="mb-3">
+                    <label htmlFor="password">Password</label>
+                        <input {...register("password")}
+                            type="password"
+                            name="password"
+                            id="password"
+                            className={`form-control rounded-3 border-0 border-bottom ${errors.password && "is-invalid"}`}
+                        />
+                        {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
+                    </div>
+                    <div className="mb-3 text-end">
+                        <a href="#">Lupa Password</a>
+                    </div>
+                    <button disabled={!isValid} type="submit" className="btn btn-primary mt-4 w-100">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </>
 )
-
-return content
-
 }
 
-export default Login
+export default Login;

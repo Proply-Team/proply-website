@@ -1,12 +1,15 @@
-import MenuComponent from "../components/Menu.component"
-import SubmissionListComponent from "../components/SubmissionList.component"
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { logout } from '../redux/authSlice'
+import RegisterComponent from '../components/Register.component'
 
 const Dashboard = () => {
+    const dispatch = useDispatch();
   return (
-    <div>
-      <p>Dashboard</p>
-      <MenuComponent />
-      <SubmissionListComponent />
+    <div className="container-fluid pt-4 px-4 bg-white bg-opacity-75" style={{height:"100vh", width:"100vw"}}>
+    <div>Dashboard</div>
+    <RegisterComponent />
+    {/* <button onClick={()=>dispatch(logout())}></button> */}
     </div>
   )
 }
