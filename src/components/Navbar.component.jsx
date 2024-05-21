@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 const NavbarComponent = () => {
   return (
+    <div style={{ display: 'flex' }}>
       <Sidebar>
         <Menu
           menuItemStyles={{
@@ -20,6 +21,7 @@ const NavbarComponent = () => {
           <MenuItem component={<Link to="/app" />}> dashboard</MenuItem>
         </Menu>
       </Sidebar>
+    </div>
   )
 }
 
