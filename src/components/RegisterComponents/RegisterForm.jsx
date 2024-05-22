@@ -13,7 +13,7 @@ const schema =z.object({
 })
 
 
-const RegisterEmployee = () => {
+const RegisterForm = () => {
     const {
         register,
         handleSubmit,
@@ -37,7 +37,7 @@ const RegisterEmployee = () => {
     
   return (
     <>
-    <h2>Register New Employee</h2>
+    <h2>Register New Admin</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="shadow-sm p-4 rounded-2 bg-white w-75">
         <div className="mb-2">
           <label className="form-label">Name</label>
@@ -73,4 +73,4 @@ const RegisterEmployee = () => {
   )
 }
 
-export default RegisterEmployee
+export default RegisterForm

@@ -8,6 +8,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import { useEffect } from 'react';
 import { useState } from 'react';
 import logo from '../assets/react.svg'
+import { useNavigate } from 'react-router-dom';
 
 const schema =z.object({
     email: z.string().email(),
@@ -17,14 +18,15 @@ const schema =z.object({
 function Login() {
     const { isAuthenticated, user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
-    const handleLogin = () => {
-    dispatch(login(userData));
-  };
+//     const handleLogin = () => {
+//     dispatch(login(userData));
+//   };
 
-    const handleLogout = () => {
-        dispatch(logout());
-    };
+//     const handleLogout = () => {
+//         dispatch(logout());
+//     };
 
     const {
         register,
@@ -53,10 +55,8 @@ function Login() {
     //     }
         if (data.email==="admin@gmail.com" && data.password==="12121212") {
             dispatch(login(userData));
-            // navigate("/app")
+            navigate("/")
         }
-    // } catch (error) {
-    //     console.log(error);
     }
 
 

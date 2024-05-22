@@ -1,15 +1,27 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import RegisterAdmin from '../components/RegisterComponents/RegisterAdmin'
-import RegisterMenu from '../components/RegisterComponents/RegisterMenu';
+import HeaderComponent from '../components/Header.component';
+import FooterComponent from '../components/Footer.component';
+import NavbarComponent from '../components/Navbar.component';
+import { Outlet } from 'react-router-dom';
+
 
 const Dashboard = () => {
-    const dispatch = useDispatch();
   return (
-    <div className="container-fluid pt-4 px-4 bg-white bg-opacity-75" style={{height:"100vh", width:"100vw"}}>
-    <div>Dashboard</div>
-    <RegisterAdmin />
-    {/* <RegisterMenu /> */}
+    <div className="d-flex flex-column bg-white" style={{minHeight:'100'}} >
+      <header className='d-flex' >
+        <HeaderComponent />
+      </header>
+      <main className='d-flex' >
+        <div style={{width:'300px'}}>
+          <NavbarComponent />
+        </div>
+        <div className='d-flex flex-column flex-grow-1'>
+          <div className='d-flex flex-grow-1'>
+          <Outlet />
+          </div>
+          <FooterComponent />
+        </div>
+      </main>
     </div>
   )
 }

@@ -1,19 +1,21 @@
 import { useState } from 'react'
 // import './App.css'
 import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import Login from './pages/Login.page';
 import Dashboard from './pages/Dashboard.page';
+import { useEffect } from 'react';
 
 
 function App() {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
-
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  
   return (
     <>
-    {isAuthenticated?
+    {!isAuthenticated?
     <Dashboard />
     :
-    <Login /> }
+    <Navigate to='/login' replace /> }
     </>
   )
 }
