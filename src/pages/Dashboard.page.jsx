@@ -15,10 +15,8 @@ const Dashboard = () => {
         <div style={{width:'300px'}}>
           <NavbarComponent />
         </div>
-        <div className='d-flex flex-column flex-grow-1'>
-          <div className='d-flex flex-grow-1'>
+        <div className='d-flex flex-column w-100 h-100 justify-content-between'>
           <Outlet />
-          </div>
           <FooterComponent />
         </div>
       </main>

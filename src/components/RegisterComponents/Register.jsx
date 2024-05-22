@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 
 const Register = () => {
   return (
-    <div>
+    <div className='d-flex flex-column'>
     <h2>Register</h2>
     <Outlet />
     </div>
