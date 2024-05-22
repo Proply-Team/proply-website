@@ -1,10 +1,13 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-const Landing = () => {
+const Register = () => {
   return (
+    <div>
+    <h2>Register</h2>
     <Outlet />
+    </div>
   )
 }
 
-export default Landing
+export default Register
