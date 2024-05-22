@@ -70,6 +70,14 @@ const NavbarComponent = () => {
                             <span>Item</span>
                         </li>
                     </Link>
+                    <Link to='/divisions'>
+                        <li className="cursor-pointer text-white">
+                            <i className="me-3">
+                                <IconCategoryPlus />
+                            </i>
+                            <span>Division</span>
+                        </li>
+                    </Link>
                     </ul>
                 </div>
                 <p className="fw-bold mt-4">Account</p>
