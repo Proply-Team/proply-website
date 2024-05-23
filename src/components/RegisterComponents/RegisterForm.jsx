@@ -37,7 +37,6 @@ const RegisterForm = () => {
     
   return (
     <div className='d-flex flex-column w-100'>
-    <h2>Register New Admin</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="shadow-sm p-4 rounded-2 bg-white">
         <div className="mb-2">
           <label className="form-label">Name</label>
@@ -65,7 +64,7 @@ const RegisterForm = () => {
           {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
         </div>
         <div className="d-flex gap-2 mt-4">
-          <button className="btn btn-success me-2 d-flex align-items-center gap-2" type="submit">Register</button>
+          <button className="btn btn-secondary px-5 d-flex align-items-center gap-2 fw-semibold " type="submit">Register</button>
         </div>
       </form>
 

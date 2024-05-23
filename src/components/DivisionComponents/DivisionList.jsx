@@ -24,15 +24,16 @@ export default function DivisionList() {
 
     }
         return(
-            <div className="table-responsive">
-                <button onClick={()=>handleSelectedDivision()} className="btn btn-success m-4">
-                    <IconPlus size={22}/>
+            <div className="d-flex flex-column table-responsive gap-4">
+                <div>
+                <button onClick={()=>handleSelectedDivision()} className="btn btn-secondary fw-semibold">
+                    <IconPlus size={22} className="me-2 pb-1" />
                     Insert New Division
-                </button>
-                <table className="table">
+                </button></div>
+                <table className="table text-center ">
                     <thead>
                         <tr>
-                            <th style={{color:"#bccbd2"}}>No</th>
+                            <th>No</th>
                             <th>Name</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -42,16 +43,16 @@ export default function DivisionList() {
                         {divs.map((division,idx)=>{
                             return(
                                 <tr key={idx}>
-                                    <td style={{color:"#bccbd2"}}>{++idx}</td>
+                                    <td>{++idx}</td>
                                     <td>{division.name}</td>
                                     <td style={{color:division.isActive?'green':'red'}}>{division.isActive? "Active":"Nonactive"}</td>
                                     <td>
-                                        <div className="d-flex gap-2">
-                                            <button onClick={()=>{console.log(division); handleSelectedDivision(division)}} className="btn btn-success">
-                                                <IconEdit size={22}/>
+                                        <div className="d-flex gap-2 justify-content-center">
+                                            <button onClick={()=>{console.log(division); handleSelectedDivision(division)}} className="btn btn-light">
+                                                <IconEdit size={22} color="blue" />
                                             </button>
-                                            <button onClick={()=>dispatch(remove(division.id))} className="btn btn-danger text-white">
-                                                <IconTrash size={22}/>
+                                            <button onClick={()=>dispatch(remove(division.id))} className="btn btn-light text-white">
+                                                <IconTrash size={22} color="red"/>
                                             </button>
                                         </div>
                                     </td>
