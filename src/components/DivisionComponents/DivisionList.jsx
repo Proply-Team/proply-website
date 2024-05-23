@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { IconEdit,IconTrash,IconPlus } from "@tabler/icons-react";
+import { IconWriting,IconEraser,IconPlus } from "@tabler/icons-react";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectedDivision, remove,getDivisionAction } from "../../redux/divisionSlice";
@@ -45,14 +45,14 @@ export default function DivisionList() {
                                 <tr key={idx}>
                                     <td>{++idx}</td>
                                     <td>{division.name}</td>
-                                    <td style={{color:division.isActive?'green':'red'}}>{division.isActive? "Active":"Nonactive"}</td>
+                                    <td className="fw-semibold" style={{color:division.isActive?'green':'red'}}>{division.isActive? "Active":"Nonactive"}</td>
                                     <td>
                                         <div className="d-flex gap-2 justify-content-center">
                                             <button onClick={()=>{console.log(division); handleSelectedDivision(division)}} className="btn btn-light">
-                                                <IconEdit size={22} color="blue" />
+                                                <IconWriting size={22} color="blue" />
                                             </button>
                                             <button onClick={()=>dispatch(remove(division.id))} className="btn btn-light text-white">
-                                                <IconTrash size={22} color="red"/>
+                                                <IconEraser size={22} color="red"/>
                                             </button>
                                         </div>
                                     </td>
