@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Rancho&display=swap');
+// @import './custom-fonts.scss';
+
+$light: #EEF7FF;
+$dark:       #313131;
+$primary:  #4D869C;
+$secondary:    #7AB2B2;
+$info:       #CDE8E5;
+$success:    #04c066;
+$warning:    #efd103;
+$danger:     #ff1521;
+$enable-font-face: true;
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "bootstrap/dist/css/bootstrap.min.css";

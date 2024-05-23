@@ -80,19 +80,17 @@ export default function DivisionForm() {
                             Status
                         </label>
                         <div>
-                          <button className={`btn ${status? "btn-success":"btn-danger"} me-2 d-flex align-items-center gap-2`} type="button" onClick={()=>setStatus(!status)}>{status? "Active":"Nonactive"}</button>
+                          <button className={`btn ${status? "bg-success":"bg-danger"} me-2 d-flex align-items-center gap-2 bg-opacity-75 fw-semibold text-white`} type="button" onClick={()=>setStatus(!status)}>{status? "Active":"Nonactive"}</button>
                         </div>
                     </div>
 
-                    <div className="d-flex gap-2 mt-4">
-                        <button type="submit" className="btn btn-success me-2 d-flex align-items-center gap-2">
-                            <i>
-                                <IconDeviceFloppy />
-                            </i>Submit
+                    <div className="d-flex gap-2 mt-4 ">
+                        <button type="submit" className="btn btn-secondary me-2 d-flex align-items-center gap-2 fw-semibold">
+                                <IconDeviceFloppy size={22} />Submit
                         </button>
-                        <button onClick={handleReset} type="button" className="btn btn-outline-success me-2 d-flex align-items-center gap-2">
+                        <button onClick={handleReset} type="button" className="btn btn-outline-primary me-2 d-flex align-items-center gap-2 fw-semibold border-2">
                             <i>
-                                <IconRefresh />
+                                <IconRefresh size={22}/>
                             </i>
                             Reset
                         </button>
