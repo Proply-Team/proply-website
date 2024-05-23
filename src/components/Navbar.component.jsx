@@ -1,7 +1,7 @@
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
 import logo from '../assets/react.svg'
-import { IconApps,IconChevronDown,IconHome2,IconSubtask ,IconUsers,IconUser,IconDoorExit,IconCategoryPlus } from "@tabler/icons-react";
+import { IconApps,IconChevronDown,IconHome2,IconSubtask,IconUsersGroup,IconReplace,IconHomeCog,IconUsers,IconUser,IconDoorExit,IconCategoryPlus } from "@tabler/icons-react";
 import "../../node_modules/bootstrap/dist/js/bootstrap.bundle.min";
 import { useDispatch } from "react-redux";
 import { logout } from "../redux/authSlice";
@@ -35,16 +35,16 @@ const NavbarComponent = () => {
                 <span>Home</span>
                 </li>
               </Link>
-                <li className="cursor-pointer text-white" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="true">
+                <li className="cursor-pointer text-white" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-1" aria-expanded="true">
                     <i className="me-3">
-                        <IconApps />
+                        <IconHomeCog />
                     </i>
                     <span>Management</span>
                     <i className="ms-3">
                         <IconChevronDown />
                     </i>                            
                 </li>
-                <div className="collapse" id="dashboard-collapse">
+                <div className="collapse" id="dashboard-collapse-1">
                     <ul className="text-white cursor-pointer d-flex flex-column gap-3 btn-toggle-nav list-unstyled mx-4">
                     <Link to='/register'>
                         <li className="cursor-pointer text-white">
@@ -73,13 +73,59 @@ const NavbarComponent = () => {
                     <Link to='/divisions'>
                         <li className="cursor-pointer text-white">
                             <i className="me-3">
-                                <IconCategoryPlus />
+                                <IconUsersGroup />
                             </i>
                             <span>Division</span>
                         </li>
                     </Link>
                     </ul>
                 </div>
+                <li className="cursor-pointer text-white" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-2" aria-expanded="true">
+                    <i className="me-3">
+                        <IconHomeCog />
+                    </i>
+                    <span>Procurement</span>
+                    <i className="ms-3">
+                        <IconChevronDown />
+                    </i>                            
+                </li>
+                <div className="collapse" id="dashboard-collapse-2">
+                    <ul className="text-white cursor-pointer d-flex flex-column gap-3 btn-toggle-nav list-unstyled mx-4">
+                    <Link to='/register'>
+                        <li className="cursor-pointer text-white">
+                            <i className="me-3">
+                                <IconUsers />
+                            </i>
+                            <span>Submissions</span>
+                        </li>
+                    </Link>
+                    <Link to='/item-categories'>
+                        <li className="cursor-pointer text-white">
+                            <i className="me-3">
+                                <IconSubtask />
+                            </i>
+                            <span>Approvements</span>
+                        </li>
+                    </Link>
+                    <Link to='/items'>
+                        <li className="cursor-pointer text-white">
+                            <i className="me-3">
+                                <IconCategoryPlus />
+                            </i>
+                            <span>History</span>
+                        </li>
+                    </Link>
+                    <Link to='/divisions'>
+                        <li className="cursor-pointer text-white">
+                            <i className="me-3">
+                                <IconUsersGroup />
+                            </i>
+                            <span>What?</span>
+                        </li>
+                    </Link>
+                    </ul>
+                </div>
+
                 <p className="fw-bold mt-4">Account</p>
                 <Link to='/profile'>
                 <li className="cursor-pointer text-white">
@@ -105,7 +151,6 @@ const NavbarComponent = () => {
                     </i>
                     <span>Something</span>
                 </li>
-
             </ul>
         </nav>
         <h2 className="fs-6 my-4 font-primary">
