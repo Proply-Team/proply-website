@@ -12,7 +12,7 @@ const Dashboard = () => {
         <HeaderComponent />
       </header>
       <main className='d-flex flex-row' >
-        <div style={{width:'300px'}}>
+        <div style={{width:'300px',height:'100vh', overflow:'scroll'}}>
           <NavbarComponent />
         </div>
         <div className='d-flex flex-column justify-content-between p-4 flex-grow-1'>
