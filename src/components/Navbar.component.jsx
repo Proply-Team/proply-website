@@ -78,6 +78,14 @@ const NavbarComponent = () => {
                             <span>Division</span>
                         </li>
                     </Link>
+                    <Link to='/procurement-categories'>
+                        <li className="cursor-pointer text-white">
+                            <i className="me-3">
+                                <IconSubtask />
+                            </i>
+                            <span>Procurement Category</span>
+                        </li>
+                    </Link>
                     </ul>
                 </div>
                 <li className="cursor-pointer text-white" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-2" aria-expanded="true">

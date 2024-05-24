@@ -9,6 +9,9 @@ import DivisionForm from "../components/DivisionComponents/DivisionForm";
 import Categories from "../components/CategoryComponents/Categories";
 import CategoryList from "../components/CategoryComponents/CategoryList";
 import CategoryForm from "../components/CategoryComponents/CategoryForm";
+import ProcurementCategories from "../components/ProcurementCategoryComponents/ProcurementCategories";
+import ProcurementCategoryList from "../components/ProcurementCategoryComponents/ProcurementCategoryList";
+import ProcurementCategoryForm from "../components/ProcurementCategoryComponents/ProcurementCategoryForm";
 import Items from "../components/ItemComponents/Items";
 import ItemList from "../components/ItemComponents/ItemList";
 import ItemForm from "../components/ItemComponents/ItemForm";
@@ -65,6 +68,20 @@ import Login from "../pages/Login.page";
                 {
                     path: "form",
                     element: <CategoryForm />,
+                }
+            ]
+        },
+        {
+            path: "procurement-categories",
+            element: <ProcurementCategories />,
+            children: [
+                {
+                    index:true,
+                    element: <ProcurementCategoryList />,
+                },
+                {
+                    path: "form",
+                    element: <ProcurementCategoryForm />,
                 }
             ]
         },

@@ -6,7 +6,7 @@ function ItemService() {
             setTimeout(() => {
                 if (itm) {
                     itms = [...itms,itm]
-                    resolve("successfully added itmision")
+                    resolve("successfully added item")
                 }else {
                     reject("item cannot be blank")
                 }

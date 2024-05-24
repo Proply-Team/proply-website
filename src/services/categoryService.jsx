@@ -6,7 +6,7 @@ function CategoryService() {
             setTimeout(() => {
                 if (cat) {
                     cats = [...cats,cat]
-                    resolve("successfully added catision")
+                    resolve("successfully added category")
                 }else {
                     reject("category cannot be blank")
                 }
