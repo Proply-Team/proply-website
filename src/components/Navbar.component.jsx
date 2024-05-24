@@ -16,7 +16,7 @@ const NavbarComponent = () => {
   }
 
   return(
-    <div className={"d-flex flex-column justify-content-between text-white p-4 shadow"} style={{ backgroundColor:'#4D869C', borderRadius:25, margin:7}}>
+    <div className={"d-flex flex-column justify-content-between text-white p-4 shadow"} style={{ height:'', backgroundColor:'#4D869C', borderRadius:25, margin:7}}>
         <div className="font-logo text-center mb-5">
             <h2 className="fs-2">
                 <i>
