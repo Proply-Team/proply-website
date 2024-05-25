@@ -18,6 +18,7 @@ import ItemForm from "../components/ItemComponents/ItemForm";
 import Procurements from "../components/ProcurementComponents/Procurements";
 import ProcurementList from "../components/ProcurementComponents/ProcurementList";
 import ProcurementForm from "../components/ProcurementComponents/ProcurementForm";
+import ProcurementDetail from "../components/ProcurementComponents/ProcurementDetail";
 import Profile from "../components/ProfileComponents/Profile";
 import ProfileEdit from "../components/ProfileComponents/ProfileEdit";
 import Login from "../pages/Login.page";
@@ -113,6 +114,10 @@ import Login from "../pages/Login.page";
                 {
                     path: "form",
                     element: <ProcurementForm />,
+                },
+                {
+                    path: "id",
+                    element: <ProcurementDetail />,
                 }
             ]
         },
