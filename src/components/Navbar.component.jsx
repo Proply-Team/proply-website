@@ -92,27 +92,19 @@ const NavbarComponent = () => {
                     <i className="me-3">
                         <IconHomeCog />
                     </i>
-                    <span>Procurement</span>
+                    <span>Submission</span>
                     <i className="ms-3">
                         <IconChevronDown />
                     </i>                            
                 </li>
                 <div className="collapse" id="dashboard-collapse-2">
                     <ul className="text-white cursor-pointer d-flex flex-column gap-3 btn-toggle-nav list-unstyled mx-4">
-                    <Link to='/register'>
+                    <Link to='/procurements'>
                         <li className="cursor-pointer text-white">
                             <i className="me-3">
                                 <IconUsers />
                             </i>
-                            <span>Submissions</span>
-                        </li>
-                    </Link>
-                    <Link to='/item-categories'>
-                        <li className="cursor-pointer text-white">
-                            <i className="me-3">
-                                <IconSubtask />
-                            </i>
-                            <span>Approvements</span>
+                            <span>Procurements</span>
                         </li>
                     </Link>
                     <Link to='/items'>
