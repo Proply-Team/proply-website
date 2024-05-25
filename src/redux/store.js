@@ -4,6 +4,8 @@ import divisionSlice from './divisionSlice';
 import categorySlice from './categorySlice';
 import itemSlice from './itemSlice';
 import procurementCategorySlice from './procurementCategorySlice';
+import procurementSlice from './procurementSlice';
+import procurementDetailSlice from './procurementDetailSlice';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ const store = configureStore({
     category: categorySlice.reducer,
     item: itemSlice.reducer,
     procurementCategory: procurementCategorySlice.reducer,
+    procurement: procurementSlice.reducer,
+    procurementDetail: procurementDetailSlice.reducer,
   },
 });
 
