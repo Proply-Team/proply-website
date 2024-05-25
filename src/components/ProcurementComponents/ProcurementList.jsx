@@ -18,15 +18,18 @@ export default function ProcurementList() {
     //     return <Loading/>;
     // }
 
-    const handleSelectedProcurement = (procurement) =>{
+    const handleAdd = (procurement) =>{
         dispatch(selectedProcurement(procurement));
         navigate("form");
-
+    }
+    const handleSelectedProcurement = (procurement) =>{
+        dispatch(selectedProcurement(procurement));
+        navigate("id");
     }
         return(
             <div className="d-flex flex-column table-responsive gap-4">
                 <div>
-                <button onClick={()=>handleSelectedProcurement()} className="btn btn-secondary fw-semibold">
+                <button onClick={()=>handleAdd()} className="btn btn-secondary fw-semibold">
                     <IconPlus size={22} className="me-2 pb-1" />
                     Request New Procurement
                 </button></div>
@@ -36,7 +39,6 @@ export default function ProcurementList() {
                             <th>No</th>
                             <th>Procurement Category</th>
                             <th>Requested At</th>
-                            <th>Detail</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -44,12 +46,12 @@ export default function ProcurementList() {
                     <tbody>
                         {procs.map((procurement,idx)=>{
                             return(
-                                <tr key={idx}>
+                                <tr key={idx} onClick={()=>{console.log(procurement); handleSelectedProcurement(procurement)}}>
                                     <td>{++idx}</td>
                                     <td>{procurement.procurementCategory}</td>
                                     <td>{procurement.requestedAt}</td>
-                                    <td>Item {procurement.requestedAt}</td>
-                                    <td className="fw-semibold" style={{color:procurement.isActive?'green':'red'}}>{procurement.isActive? "Active":"Nonactive"}</td>
+                                    <td>Item total: {procurement.items.length}</td>
+                                    {/* <td className="fw-semibold" style={{color:procurement.isActive?'green':'red'}}>{procurement.isActive? "Active":"Nonactive"}</td> */}
                                     <td>
                                         <div className="d-flex gap-2 justify-content-center">
                                             {/* <button onClick={()=>{console.log(procurement); handleSelectedProcurement(procurement)}} className="btn btn-light">
