@@ -8,6 +8,7 @@ import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
+import { toast } from "react-toastify";
 
 const schema =z.object({
     id: z.string().nullable(),
@@ -47,13 +48,16 @@ export default function CategoryForm() {
       data.isActive=status;
         if (data.id&&data.id!="") {  
           const cat = {...data};
-          dispatch(update(cat));      
+          dispatch(update(cat));
+          toast.success("update success");      
         }else {
             const cat ={
                 ...data,
                 id: new Date().getMilliseconds().toString(),
             };
-            dispatch(add(cat));      
+            dispatch(add(cat));
+            toast.success("new item category added");
+      
         }
         handleReset();
         navigate("/item-categories");

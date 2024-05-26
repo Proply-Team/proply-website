@@ -9,6 +9,8 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import logo from '../assets/react.svg'
 import { useNavigate } from 'react-router-dom';
+import { Flip, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const schema =z.object({
     email: z.string().email(),
@@ -19,14 +21,6 @@ function Login() {
     const { isAuthenticated, user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate()
-
-//     const handleLogin = () => {
-//     dispatch(login(userData));
-//   };
-
-//     const handleLogout = () => {
-//         dispatch(logout());
-//     };
 
     const {
         register,
@@ -39,7 +33,7 @@ function Login() {
 
 
     console.log(errors);
-    const onSubmit = async (data) => {
+    const onSubmit = (data) => {
         const userData = { email: data.email, password:data.password };
     
     // const response = await axios.post('/api/auth/login',data);
@@ -51,11 +45,15 @@ function Login() {
     //         sessionStorage.setItem('token', token);
     //         sessionStorage.setItem('userId', userId);
     //         sessionStorage.setItem('roles', JSON.stringify(roles));
-    //         navigate("/app")
+    //         navigate("/")
     //     }
         if (data.email==="admin@gmail.com" && data.password==="12121212") {
+            toast.success("login success");
+            console.log("toast login");
             dispatch(login(userData));
             navigate("/")
+        }else {
+            toast.error("invalid email or password")      
         }
     }
 
@@ -95,6 +93,20 @@ return(
             </form>
         </div>
     </div>
+    <ToastContainer 
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="colored"
+        transition={Flip}
+        />
+
     </>
 )
 }

@@ -2,6 +2,8 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 
 const schema =z.object({
@@ -14,7 +16,9 @@ const schema =z.object({
 
 
 const RegisterForm = () => {
-    const {
+  const navigate = useNavigate()
+
+  const {
         register,
         handleSubmit,
         reset,
@@ -32,7 +36,9 @@ const RegisterForm = () => {
 
       const onSubmit = (data) => {
         console.log(data);
-        reset
+        toast.success("registration success");
+        reset()
+        navigate('/register')
       };
     
   return (
