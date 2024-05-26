@@ -21,6 +21,7 @@ import ProcurementForm from "../components/ProcurementComponents/ProcurementForm
 import ProcurementDetail from "../components/ProcurementComponents/ProcurementDetail";
 import Profile from "../components/ProfileComponents/Profile";
 import ProfileEdit from "../components/ProfileComponents/ProfileEdit";
+import ProfileUser from "../components/ProfileComponents/ProfileUser";
 import Login from "../pages/Login.page";
 
 
@@ -125,6 +126,10 @@ import Login from "../pages/Login.page";
             path: "profile",
             element: <Profile />,
             children: [
+                {
+                    index:true,
+                    element: <ProfileUser />,
+                },
                 {
                     path: "edit",
                     element: <ProfileEdit />,
