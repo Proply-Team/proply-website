@@ -3,6 +3,7 @@ import { IconWriting,IconEraser,IconPlus } from "@tabler/icons-react";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectedProcurement, remove,getProcurementAction } from "../../redux/procurementSlice";
+import moment from "moment";
 
 export default function ProcurementList() {
     const{procs,isLoading} = useSelector((state)=>state.procurement)
@@ -17,6 +18,10 @@ export default function ProcurementList() {
     // if(isLoading) {
     //     return <Loading/>;
     // }
+
+    const handleDate = (date) =>{
+        return moment(date).format('LL');
+    }
 
     const handleAdd = (procurement) =>{
         dispatch(selectedProcurement(procurement));
@@ -49,7 +54,7 @@ export default function ProcurementList() {
                                 <tr key={idx} onClick={()=>{console.log(procurement); handleSelectedProcurement(procurement)}}>
                                     <td>{++idx}</td>
                                     <td>{procurement.procurementCategory}</td>
-                                    <td>{procurement.requestedAt}</td>
+                                    <td>{handleDate(procurement.requestedAt)}</td>
                                     <td>Item total: {procurement.items.length}</td>
                                     {/* <td className="fw-semibold" style={{color:procurement.isActive?'green':'red'}}>{procurement.isActive? "Active":"Nonactive"}</td> */}
                                     <td>

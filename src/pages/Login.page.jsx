@@ -11,10 +11,11 @@ import logo from '../assets/react.svg'
 import { useNavigate } from 'react-router-dom';
 import { Flip, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AuthService from '../services/authService';
 
 const schema =z.object({
     email: z.string().email(),
-    password: z.string().min(8,"Password has to be more than 8 characters")
+    password: z.string().min(6,"Password has to be more than 5 characters")
 })
 
 function Login() {
@@ -31,32 +32,37 @@ function Login() {
         resolver:zodResolver(schema),
     });
 
+    const service = AuthService();
 
-    console.log(errors);
-    const onSubmit = (data) => {
-        const userData = { email: data.email, password:data.password };
+    const onSubmit = async (data) => {
+        try {    
+          const res = await service.login({ email:data.email, password:data.password });
+          console.log(res);
     
-    // const response = await axios.post('/api/auth/login',data);
-    // try {
-    //     const response = await authService.login (data);
-    //     console.log(response);
-    //     if (response && response.statusCode === 200) {
-    //         const {token,userId, roles} = response.data;
-    //         sessionStorage.setItem('token', token);
-    //         sessionStorage.setItem('userId', userId);
-    //         sessionStorage.setItem('roles', JSON.stringify(roles));
-    //         navigate("/")
-    //     }
-        if (data.email==="admin@gmail.com" && data.password==="12121212") {
-            toast.success("login success");
-            console.log("toast login");
-            dispatch(login(userData));
-            navigate("/")
-        }else {
-            toast.error("invalid email or password")      
+          const token = res.data.token;
+          await AsyncStorage.setItem('token', token);
+    
+          const decodedToken = jwtDecode(token);
+          const role = decodedToken.role;
+          console.log("Role", role)
+    
+          if (role === 'ROLE_ADMIN') {
+            toast.success("successfully logged in")
+            navigate('/admin');
+          }
+          else if (role === 'ROLE_MANAGER') {
+            navigate('/manager');
+            toast.success("successfully logged in")
+          }
+          else if (role === 'ROLE_EMPLOYEE') {
+            navigate('/employee');
+            toast.success("successfully logged in")
+          }
+        } catch (err) {
+            toast.error("invalid email or password")
         }
-    }
-
+      }
+    
 
 
 return(
