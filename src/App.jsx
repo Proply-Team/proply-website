@@ -10,13 +10,13 @@ function App() {
   const { isAuthenticated } = useSelector((state) => state.auth);
   
   return (
-    <>
-    {isAuthenticated?
+    <div className='App'>
+    {!isAuthenticated?
     <Dashboard />
     :
     <Navigate to='/login' replace /> }
 
-    </>
+    </div>
   )
 }
 

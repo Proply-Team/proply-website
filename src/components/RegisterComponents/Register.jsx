@@ -20,12 +20,12 @@ const Register = () => {
       <button className="btn btn-info dropdown-toggle px-4 fw-semibold" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {label}
       </button>
-    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton" >
-      <a className="dropdown-item" onClick={()=>handleOption("admin","Admin")}>Admin</a>
-      <a className="dropdown-item" onClick={()=>handleOption("manager","Manager")}>Manager</a>
-      <a className="dropdown-item" onClick={()=>handleOption("employee","Employee")}>Employee</a>
+      <div className="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+        <a className="dropdown-item" onClick={()=>handleOption("admin","Admin")}>Admin</a>
+        <a className="dropdown-item" onClick={()=>handleOption("manager","Manager")}>Manager</a>
+        <a className="dropdown-item" onClick={()=>handleOption("employee","Employee")}>Employee</a>
+      </div>
     </div>
-  </div>
 
     <Outlet />
     </div>
