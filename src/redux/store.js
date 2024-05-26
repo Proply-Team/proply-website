@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './authSlice';
+import profileSlice from './profileSlice';
 import divisionSlice from './divisionSlice';
 import categorySlice from './categorySlice';
 import itemSlice from './itemSlice';
@@ -10,6 +11,7 @@ import procurementDetailSlice from './procurementDetailSlice';
 const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
+    profile: profileSlice.reducer,
     division: divisionSlice.reducer,
     category: categorySlice.reducer,
     item: itemSlice.reducer,
