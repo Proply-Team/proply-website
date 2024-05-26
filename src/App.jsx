@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import Login from './pages/Login.page';
 import Dashboard from './pages/Dashboard.page';
-import { useEffect } from 'react';
 
 
 function App() {
@@ -12,10 +11,11 @@ function App() {
   
   return (
     <>
-    {!isAuthenticated?
+    {isAuthenticated?
     <Dashboard />
     :
     <Navigate to='/login' replace /> }
+
     </>
   )
 }

@@ -3,6 +3,8 @@ import HeaderComponent from '../components/Header.component';
 import FooterComponent from '../components/Footer.component';
 import NavbarComponent from '../components/Navbar.component';
 import { Outlet } from 'react-router-dom';
+import { Flip, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Dashboard = () => {
@@ -20,6 +22,19 @@ const Dashboard = () => {
           <FooterComponent />
         </div>
       </main>
+      <ToastContainer 
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="colored"
+        transition={Flip}
+        />
     </div>
   )
 }
