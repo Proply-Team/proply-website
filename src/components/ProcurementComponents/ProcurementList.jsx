@@ -51,11 +51,11 @@ export default function ProcurementList() {
                     <tbody>
                         {procs.map((procurement,idx)=>{
                             return(
-                                <tr key={idx} onClick={()=>{console.log(procurement); handleSelectedProcurement(procurement)}}>
-                                    <td>{++idx}</td>
-                                    <td>{procurement.procurementCategory}</td>
-                                    <td>{handleDate(procurement.requestedAt)}</td>
-                                    <td>Item total: {procurement.items.length}</td>
+                                <tr key={idx} >
+                                    <td onClick={()=>handleSelectedProcurement(procurement)}>{++idx}</td>
+                                    <td onClick={()=>handleSelectedProcurement(procurement)}>{procurement.procurementCategory}</td>
+                                    <td onClick={()=>handleSelectedProcurement(procurement)}>{handleDate(procurement.requestedAt)}</td>
+                                    <td onClick={()=>handleSelectedProcurement(procurement)}>Item total: {procurement.items.length}</td>
                                     {/* <td className="fw-semibold" style={{color:procurement.isActive?'green':'red'}}>{procurement.isActive? "Active":"Nonactive"}</td> */}
                                     <td>
                                         <div className="d-flex gap-2 justify-content-center">

@@ -14,10 +14,12 @@ const schema =z.object({
 })
 
 export default function ProcurementForm() {
-    const {proc} = useSelector((state)=>state.procurement)
-    const [label,setLabel] = useState("Select Procurement Category");
-    const [label2,setLabel2] = useState("Select Item Category");
-    const [error, setError] = useState("Can not be blank")
+    const {proCats} = useSelector((state)=>state.procurementCategory)
+    const {cats} = useSelector((state)=>state.category)
+    const {itms} = useSelector((state)=>state.item)
+    const [procurementCategory,setProcurementCategory] = useState(["Select Procurement Category",'']);
+    const [itemCategory,setItemCategory] = useState(["Select Item Category",'']);
+    const [item,setItem] = useState(["Select Item",'']);
     const [detail,setDetail] =useState({item:"",qty:""})
     const dispatch = useDispatch();
     const [itemList,setItemList] = useState([]) 
@@ -51,7 +53,7 @@ export default function ProcurementForm() {
                 ...data,
                 id: new Date().getMilliseconds().toString(),
                 user:"this user",
-                procurementCategory: label,
+                procurementCategory: procurementCategory[1],
                 requestedAt: Date.now(),
                 items: itemList
             };
@@ -76,7 +78,7 @@ export default function ProcurementForm() {
             id: new Date().getMilliseconds().toString(),
             item: detail.item,
             qty: detail.qty,
-            itemCategory: label2
+            itemCategory: itemCategory[1]
         }
         console.log(items);
         itemList.push(items);
@@ -85,38 +87,50 @@ export default function ProcurementForm() {
     }
     
     const navigate = useNavigate();
-
         return(
             <>
                 <form autoComplete="off" onSubmit={handleSubmit(onSubmit)} className="mb-3 d-flex gap-5 shadow-sm p-4 rounded-2 bg-white w-100">
                         <div className="d-flex flex-column gap-3 w-75">
                             <div className="dropdown">
-                                <button className="btn btn-info dropdown-toggle px-4 fw-semibold" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {label}
+                                <h6>Procurement Category</h6>
+                                <button className="btn btn-info dropdown-toggle px-4 fw-semibold" type="button" id="dropdownProcurementCategory" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {procurementCategory[0]}
                                 </button>
-                                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton" >
-                                <a className="dropdown-item" onClick={()=>setLabel("Technology")}>Technology</a>
-                                <a className="dropdown-item" onClick={()=>setLabel("Funds")}>Funds</a>
-                                <a className="dropdown-item" onClick={()=>setLabel("Else")}>Else</a>
+                                <div className="dropdown-menu" aria-labelledby="dropdownProcurementCategory" >
+                                    {proCats.map((proCat)=>{
+                                        return(
+                                            <a className="dropdown-item" onClick={()=>setProcurementCategory([proCat.name,proCat.name])}>{proCat.name}</a>
+                                        )
+                                    })}
                                 </div>
                             </div>
-                            <h5>Items</h5>
                             <div className="d-flex flex-column mb-3 gap-3">
                                 <div className="dropdown">
-                                    <button className="btn btn-info dropdown-toggle px-4 fw-semibold" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {label2}
+                                    <h6>Item Category</h6>
+                                    <button className="btn btn-info dropdown-toggle px-4 fw-semibold" type="button" id="dropdownItemCategory" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {itemCategory[0]}
                                     </button>
-                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton" >
-                                    <a className="dropdown-item" onClick={()=>setLabel2("Foods")}>Foods</a>
-                                    <a className="dropdown-item" onClick={()=>setLabel2("Equipments")}>Equipments</a>
-                                    <a className="dropdown-item" onClick={()=>setLabel2("Else")}>Else</a>
+                                    <div className="dropdown-menu" aria-labelledby="dropdownItemCategory" >
+                                    {cats.map((cat)=>{
+                                        return(
+                                            <a className="dropdown-item" onClick={()=>setItemCategory([cat.name,cat.name])}>{cat.name}</a>
+                                        )
+                                    })}
                                     </div>
                                 </div>
                                 <div className="d-flex flex-column gap-4">
-                                    <div className="mb-2">
-                                        <label className="form-label">Item Name</label>
-                                        <input value={detail.item} onChange={onChange} className={`form-control rounded-3 border-0 border-bottom `} type="text" name="item" />
-                                        {/* {errors.item && <div className="invalid-feedback">{errors.item.message}</div>} */}
+                                    <div className="dropdown">
+                                        <h6>Item Name</h6>
+                                        <button className="btn btn-info dropdown-toggle px-4 fw-semibold" type="button" id="dropdownItem" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            {item[0]}
+                                        </button>
+                                        <div className="dropdown-menu" aria-labelledby="dropdownItem" >
+                                        {itms.map((itm)=>{
+                                            return(
+                                                <a className="dropdown-item" onClick={()=>setItem([itm.name,itm.name])}>{itm.name}</a>
+                                            )
+                                        })}
+                                        </div>
                                     </div>
                                     <div className="mb-2 w-50">
                                         <label className="form-label">Quantity</label>
@@ -140,7 +154,6 @@ export default function ProcurementForm() {
                                             <td>Item</td>
                                             <td>Item Category</td>
                                             <td>Quantity</td>
-                                            <td>No</td>
                                         </tr>
                                     </thead>
                                     <tbody>
