@@ -23,6 +23,7 @@ import Profile from "../components/ProfileComponents/Profile";
 import ProfileEdit from "../components/ProfileComponents/ProfileEdit";
 import ProfileUser from "../components/ProfileComponents/ProfileUser";
 import Login from "../pages/Login.page";
+import MenuComponent from "../components/Menu.component";
 
 
   export const router = createBrowserRouter([
@@ -30,6 +31,10 @@ import Login from "../pages/Login.page";
       path: "/",
       element: <App />,
       children: [
+        {
+            index:true,
+            element: <MenuComponent />,
+        },
         {
             path: "register",
             element: <Register />,

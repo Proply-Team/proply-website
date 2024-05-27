@@ -16,7 +16,7 @@ const NavbarComponent = () => {
   }
 
   return(
-    <div className={"d-flex flex-column justify-content-between text-white p-4 shadow"} style={{ height:'', backgroundColor:'#4D869C', borderRadius:25, margin:7}}>
+    <div className={"d-flex flex-column justify-content-between text-white rounded-end-5 py-4 ps-4 pe-2 shadow h-100 "} style={{ backgroundColor:'#4D869C'}}>
         <div className="font-logo text-center mb-5">
             <h2 className="fs-2">
                 <i>
@@ -25,7 +25,7 @@ const NavbarComponent = () => {
             </h2>
             <b>Submission Management</b>
         </div>
-        <nav>
+        <nav className='overflow-auto'>
             <ul className="d-flex flex-column gap-3 nav-list list-unstyled">
               <Link to='/'>
                 <li className="cursor-pointer text-white">
