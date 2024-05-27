@@ -25,6 +25,7 @@ import Login from "../pages/Login.page";
 import MenuComponent from "../components/Menu.component";
 import AuthGuard from "../components/Guard/AuthGuard";
 import LayoutMain from "../components/Layouts/LayoutMain/LayoutMain";
+import AuthrozationRoute from "../components/Guard/AuthrozationRoute";
 
 
   export const router = createBrowserRouter([
@@ -52,7 +53,7 @@ import LayoutMain from "../components/Layouts/LayoutMain/LayoutMain";
                 },
                 {
                     path: "divisions",
-                    element: <Divisions />,
+                    element: <AuthrozationRoute component={Divisions} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
                     children: [
                         {
                             index:true,
@@ -66,7 +67,7 @@ import LayoutMain from "../components/Layouts/LayoutMain/LayoutMain";
                 },
                 {
                     path: "item-categories",
-                    element: <Categories />,
+                    element: <AuthrozationRoute component={Categories} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
                     children: [
                         {
                             index:true,
@@ -80,7 +81,7 @@ import LayoutMain from "../components/Layouts/LayoutMain/LayoutMain";
                 },
                 {
                     path: "procurement-categories",
-                    element: <ProcurementCategories />,
+                    element: <AuthrozationRoute component={ProcurementCategories} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
                     children: [
                         {
                             index:true,
@@ -94,7 +95,7 @@ import LayoutMain from "../components/Layouts/LayoutMain/LayoutMain";
                 },
                 {
                     path: "items",
-                    element: <Items />,
+                    element: <AuthrozationRoute component={Items} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
                     children: [
                         {
                             index:true,
@@ -140,7 +141,7 @@ import LayoutMain from "../components/Layouts/LayoutMain/LayoutMain";
                 },
                 {
                     path: "register",
-                    element: <Register />,
+                    element: <AuthrozationRoute component={Register} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
                     children: [
                         {
                             path: "admin",

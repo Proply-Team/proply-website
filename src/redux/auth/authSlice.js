@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 const initialState = {
   user: null,
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true,
   error: null
 };
 
@@ -18,8 +18,10 @@ const authSlice = createSlice({
       state.user = action.payload;
     },
     logout: (state) => {
-      state.isAuthenticated = false;
-      state.user = null;
+      state.error = null
+      state.isAuthenticated = null
+      state.isLoading = false
+      state.user = null
     },
   },
   extraReducers: (builder) => {
@@ -53,7 +55,6 @@ const authSlice = createSlice({
       state.isLoading = true
       state.isAuthenticated = false
       state.error = null
-      console.log("pending")
     })
 
     builder.addCase(AuthAction.validateAsyncThunk.fulfilled, (state, {payload}) => {
