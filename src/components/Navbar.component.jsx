@@ -4,7 +4,7 @@ import logo from '../assets/react.svg'
 import { IconApps,IconChevronDown,IconHome2,IconSubtask,IconUsersGroup,IconReplace,IconHomeCog,IconUsers,IconUser,IconDoorExit,IconCategoryPlus } from "@tabler/icons-react";
 import "../../node_modules/bootstrap/dist/js/bootstrap.bundle.min";
 import { useDispatch } from "react-redux";
-import { logout } from "../redux/authSlice";
+import { logout } from "../redux/auth/authSlice";
 
 
 const NavbarComponent = () => {

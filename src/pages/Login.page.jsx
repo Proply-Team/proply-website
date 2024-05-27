@@ -1,17 +1,13 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from '../redux/authSlice';
-// import {useNavigate} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import { useEffect } from 'react';
-import { useState } from 'react';
 import logo from '../assets/react.svg'
 import { useNavigate } from 'react-router-dom';
 import { Flip, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AuthService from '../services/authService';
+import { AuthAction } from '../redux/auth/authAction';
 
 const schema =z.object({
     email: z.string().email(),
@@ -19,7 +15,6 @@ const schema =z.object({
 })
 
 function Login() {
-    const { isAuthenticated, user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
@@ -32,25 +27,15 @@ function Login() {
         resolver:zodResolver(schema),
     });
 
-    const service = AuthService();
-
     const onSubmit = async (data) => {
         try {    
-          const res = await service.login(data.email, data.password);
-          console.log(res);
-    
-          const token = res.data.token;
-          await AsyncStorage.setItem('token', token);
-    
-          const decodedToken = jwtDecode(token);
-          const role = decodedToken.role;
-          console.log("Role", role)
+          console.log(data);
+          await dispatch(AuthAction.loginAsyncThunk(data))
+          
         } catch (err) {
             toast.error("invalid email or password")
         }
-      }
-    
-
+    }
 
 return(
     <>

@@ -20,6 +20,9 @@ const authSlice = createSlice({
       state.user = null;
     },
   },
+  extraReducers: build => {
+    build.addCase
+  }
 });
 
 export const { login, logout } = authSlice.actions;
