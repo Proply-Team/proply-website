@@ -16,7 +16,6 @@ const schema =z.object({
 
 function Login() {
     const dispatch = useDispatch();
-    const navigate = useNavigate()
 
     const {
         register,
@@ -29,9 +28,7 @@ function Login() {
 
     const onSubmit = async (data) => {
         try {    
-          console.log(data);
-          await dispatch(AuthAction.loginAsyncThunk(data))
-
+            await dispatch(AuthAction.loginAsyncThunk({data: data, toast}))
         } catch (err) {
             toast.error("invalid email or password")
         }
@@ -73,19 +70,6 @@ return(
                 <img src={bgGif} alt="Gif Login" className='w-75'/>
             </div>
         </div>
-        <ToastContainer 
-            position="top-right"
-            autoClose={2000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover={false}
-            theme="colored"
-            transition={Flip}
-        />
     </div>
 )
 }

@@ -1,13 +1,17 @@
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
 import logo from '../assets/react.svg'
-import { IconApps,IconChevronDown,IconHome2,IconSubtask,IconUsersGroup,IconReplace,IconHomeCog,IconUsers,IconUser,IconDoorExit,IconCategoryPlus } from "@tabler/icons-react";
+import { IconChevronDown,IconHome2,IconSubtask,IconUsersGroup,IconReplace,IconHomeCog,IconUsers,IconUser,IconDoorExit,IconCategoryPlus } from "@tabler/icons-react";
 import "../../node_modules/bootstrap/dist/js/bootstrap.bundle.min";
 import { useDispatch } from "react-redux";
-import { logout } from "../redux/auth/authSlice";
+import { logout, selectAuth } from "../redux/auth/authSlice";
+import { useSelector } from 'react-redux';
 
 
 const NavbarComponent = () => {
+    const {
+        role
+    } = useSelector(selectAuth)
 
   const dispatch=useDispatch();
   const handleLogout = ()=>{
@@ -46,14 +50,16 @@ const NavbarComponent = () => {
                 </li>
                 <div className="collapse" id="dashboard-collapse-1">
                     <ul className="text-white cursor-pointer d-flex flex-column gap-3 btn-toggle-nav list-unstyled mx-4">
-                    <Link to='/register'>
-                        <li className="cursor-pointer text-white">
-                            <i className="me-3">
-                                <IconUsers />
-                            </i>
-                            <span>User</span>
-                        </li>
-                    </Link>
+                        {role == "admin" && (
+                            <Link to='/register'>
+                                <li className="cursor-pointer text-white">
+                                    <i className="me-3">
+                                        <IconUsers />
+                                    </i>
+                                    <span>User</span>
+                                </li>
+                            </Link>
+                        )}
                     <Link to='/item-categories'>
                         <li className="cursor-pointer text-white">
                             <i className="me-3">
