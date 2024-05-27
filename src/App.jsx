@@ -13,22 +13,15 @@ function App() {
 
   const fetchToken = async () => {
     try{
-      const res = await dispatch(AuthAction.validateAsyncThunk())
-      return res
+      await dispatch(AuthAction.validateAsyncThunk())
     }catch(e){
       toast.error('Token expired, login again.')
     }
   }
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-
-    if(token){
       fetchToken()
-    }
   }, [])
-
-  console.log(isLoading)
 
   if(isLoading) return null
 

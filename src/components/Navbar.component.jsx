@@ -16,7 +16,6 @@ const NavbarComponent = () => {
   const dispatch=useDispatch();
   const handleLogout = ()=>{
     dispatch(logout())
-
   }
 
   return(
