@@ -22,9 +22,9 @@ const RegisterForm = () => {
   const navigate = useNavigate()
   const{divs}= useSelector((state)=>state.division)
   const [selectedDate, setSelectedDate] = useState('');
-  const [maritalStatus, setMaritalStatus] = useState(['Options','']);
-  const [gender, setGender] = useState(['Options','']);
-  const [division, setDivision] = useState(['Options','']);
+  const [maritalStatus, setMaritalStatus] = useState(['','Options']);
+  const [gender, setGender] = useState(['','Options']);
+  const [division, setDivision] = useState(['','Options']);
 
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
@@ -75,17 +75,17 @@ const RegisterForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="shadow-sm p-4 rounded-2 bg-white">
         <div className="mb-2">
           <label className="form-label">Name</label>
-          <input {...register("fullName")} className={`form-control rounded-3 border-0 border-bottom ${errors.fullName && "is-invalid"}`} type="text" name="fullName" />
+          <input {...register("fullName")} className={`bg-light form-control rounded-3 border-0 border-bottom ${errors.fullName && "is-invalid"}`} type="text" name="fullName" />
           {errors.fullName && <div className="invalid-feedback">{errors.fullName.message}</div>}
         </div>
         <div className="mb-2">
           <label className="form-label">Birth Date</label>
-          <input type="date" id="date" value={selectedDate} onChange={handleDateChange}/>
-          {selectedDate && <p>Selected date (formatted): {formatDate(selectedDate)}</p>}
+          <input className='bg-light form-control rounded-3 border-0 border-bottom' type="date" id="date" value={selectedDate} onChange={handleDateChange} style={{width:200}}/>
+          {/* {selectedDate && <p>{formatDate(selectedDate)}</p>} */}
         </div>
         <div className="mb-2">
           <label className="form-label">Phone Number</label>
-          <input {...register("mobilePhone")} className={`form-control rounded-3 border-0 border-bottom ${errors.mobilePhone && "is-invalid"}`} type="text" name="mobilePhone" />
+          <input {...register("mobilePhone")} className={`bg-light form-control rounded-3 border-0 border-bottom ${errors.mobilePhone && "is-invalid"}`} type="text" name="mobilePhone" />
           {errors.mobilePhone && <div className="invalid-feedback">{errors.mobilePhone.message}</div>}
         </div>
         <div className="mb-2">
@@ -128,12 +128,12 @@ const RegisterForm = () => {
         </div>
         <div className="mb-2">
           <label className="form-label">Email</label>
-          <input {...register("email")} className={`form-control rounded-3 border-0 border-bottom ${errors.email && "is-invalid"}`} type="email" name="email" />
+          <input {...register("email")} className={`bg-light form-control rounded-3 border-0 border-bottom ${errors.email && "is-invalid"}`} type="email" name="email" />
           {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
         </div>
         <div className="mb-2">
           <label className="form-label">Password</label>
-          <input {...register("password")} className={`form-control rounded-3 border-0 border-bottom ${errors.password && "is-invalid"}`} type="password" name="password" />
+          <input {...register("password")} className={`bg-light form-control rounded-3 border-0 border-bottom ${errors.password && "is-invalid"}`} type="password" name="password" />
           {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
         </div>
         <div className="d-flex gap-2 mt-4">

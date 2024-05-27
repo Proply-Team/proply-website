@@ -9,18 +9,16 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
   return (
-    <div className="d-flex bg-light" style={{minHeight:'100vh'}} >
-        <div style={{width:'300px',height:'100vh'}} >
+    <div className="d-flex bg-light my-2" style={{minHeight:'100vh'}} >
+        <div className='left-component' style={{width:'300px',height:'100vh', position:'fixed'}} >
           <NavbarComponent />
         </div>
-      <main className='d-flex flex-column flex-fill m-2' >
+      <main className='right-component w-100' style={{marginLeft:320}} >
           <HeaderComponent />
-        <div className='d-flex flex-column justify-content-between flex-grow-1'>
           <div className='m-3'>
           <Outlet />
           </div>
           <FooterComponent />
-        </div>
       </main>
       <ToastContainer 
         position="top-right"

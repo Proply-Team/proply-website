@@ -6,6 +6,8 @@ import { useState,useEffect } from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
+
 
 const schema =z.object({
     id: z.string().nullable(),
@@ -46,12 +48,14 @@ export default function ProcurementCategoryForm() {
         if (data.id&&data.id!="") {  
           const proCat = {...data};
           dispatch(update(proCat));      
+          toast.success("Procurement category successfully updated");
         }else {
             const proCat ={
                 ...data,
                 id: new Date().getMilliseconds().toString(),
             };
             dispatch(add(proCat));      
+            toast.success("Procurement category successfully added");
         }
         handleReset();
         navigate("/procurement-categories");

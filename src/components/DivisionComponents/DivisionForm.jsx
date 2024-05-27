@@ -6,8 +6,8 @@ import { useState,useEffect } from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import ToggleButton from 'react-bootstrap/ToggleButton';
+import { toast } from "react-toastify";
+
 
 const schema =z.object({
     id: z.string().nullable(),
@@ -48,12 +48,14 @@ export default function DivisionForm() {
         if (data.id&&data.id!="") {  
           const div = {...data};
           dispatch(update(div));      
+          toast.success("Division successfully added");
         }else {
             const div ={
                 ...data,
                 id: new Date().getMilliseconds().toString(),
             };
-            dispatch(add(div));      
+            dispatch(add(div));
+            toast.success("Division successfully added");      
         }
         handleReset();
         navigate("/divisions");

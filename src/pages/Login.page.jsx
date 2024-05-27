@@ -36,7 +36,7 @@ function Login() {
 
     const onSubmit = async (data) => {
         try {    
-          const res = await service.login({ email:data.email, password:data.password });
+          const res = await service.login(data.email, data.password);
           console.log(res);
     
           const token = res.data.token;
@@ -45,19 +45,6 @@ function Login() {
           const decodedToken = jwtDecode(token);
           const role = decodedToken.role;
           console.log("Role", role)
-    
-          if (role === 'ROLE_ADMIN') {
-            toast.success("successfully logged in")
-            navigate('/admin');
-          }
-          else if (role === 'ROLE_MANAGER') {
-            navigate('/manager');
-            toast.success("successfully logged in")
-          }
-          else if (role === 'ROLE_EMPLOYEE') {
-            navigate('/employee');
-            toast.success("successfully logged in")
-          }
         } catch (err) {
             toast.error("invalid email or password")
         }

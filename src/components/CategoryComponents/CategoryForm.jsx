@@ -49,14 +49,14 @@ export default function CategoryForm() {
         if (data.id&&data.id!="") {  
           const cat = {...data};
           dispatch(update(cat));
-          toast.success("update success");      
+          toast.success("Item category successfully updated");      
         }else {
             const cat ={
                 ...data,
                 id: new Date().getMilliseconds().toString(),
             };
             dispatch(add(cat));
-            toast.success("new item category added");
+            toast.success("Item category successfully added");
       
         }
         handleReset();
