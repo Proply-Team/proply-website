@@ -1,10 +1,12 @@
 import React from 'react'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { selectAuth } from '../../redux/auth/authSlice'
 
 const Register = () => {
-
+  const {user} = useSelector(selectAuth)
   const [label,setLabel] = useState("Choose Role to be Registered");
   const navigate = useNavigate();
 
@@ -21,7 +23,7 @@ const Register = () => {
         {label}
       </button>
       <div className="dropdown-menu" aria-labelledby="dropdownMenuButton" >
-        <a className="dropdown-item" onClick={()=>handleOption("admin","Admin")}>Admin</a>
+        {user.role=='ROLE_ADMIN' && (<a className="dropdown-item" onClick={()=>handleOption("admin","Admin")}>Admin</a>)}
         <a className="dropdown-item" onClick={()=>handleOption("manager","Manager")}>Manager</a>
         <a className="dropdown-item" onClick={()=>handleOption("employee","Employee")}>Employee</a>
       </div>

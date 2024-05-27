@@ -145,7 +145,7 @@ import AuthrozationRoute from "../components/Guard/AuthrozationRoute";
                     children: [
                         {
                             path: "admin",
-                            element: <RegisterForm />,
+                            element: <AuthrozationRoute component={RegisterForm} roles={['ROLE_ADMIN']} />,
                         },
                         {
                             path: "manager",

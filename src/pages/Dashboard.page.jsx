@@ -12,9 +12,9 @@ const Dashboard = () => {
         <div className='left-component' style={{width:'300px',height:'100vh', position:'fixed'}} >
           <NavbarComponent />
         </div>
-      <main className='right-component w-100' style={{marginLeft:320}} >
+      <main className='d-flex flex-column right-component w-100' style={{marginLeft:320}}  >
           <HeaderComponent />
-          <div className='m-3'>
+          <div className='p-3 flex-fill'>
           <Outlet />
           </div>
           <FooterComponent />
