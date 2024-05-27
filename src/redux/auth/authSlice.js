@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { AuthAction } from './authAction';
+import { jwtDecode } from 'jwt-decode';
 
 const initialState = {
-  isAuthenticated: false,
   user: null,
-  token:null,
-  role: null
+  isAuthenticated: false,
+  isLoading: false,
+  error: null
 };
 
 const authSlice = createSlice({
@@ -20,8 +22,59 @@ const authSlice = createSlice({
       state.user = null;
     },
   },
-  extraReducers: build => {
-    build.addCase
+  extraReducers: (builder) => {
+    builder.addCase(AuthAction.loginAsyncThunk.pending, (state) => {
+      state.isLoading = true
+      state.error = null
+      state.isAuthenticated = false
+    })
+    builder.addCase(AuthAction.loginAsyncThunk.fulfilled, (state, {payload}) => {
+      state.isLoading = false
+      state.error = null
+
+      const user = jwtDecode(payload.data.token)
+      if(user){
+        state.user = {
+          email: user.email,
+          fullName: user.fullName,
+          role: user.role
+        }
+        state.isAuthenticated = true
+      }
+    })
+    builder.addCase(AuthAction.loginAsyncThunk.rejected, (state, {payload}) => {
+      state.isLoading = false
+      state.isAuthenticated = false
+      state.error = payload.message
+    })
+
+    // Validate Token
+    builder.addCase(AuthAction.validateAsyncThunk.pending, (state) => {
+      state.isLoading = true
+      state.isAuthenticated = false
+      state.error = null
+      console.log("pending")
+    })
+
+    builder.addCase(AuthAction.validateAsyncThunk.fulfilled, (state, {payload}) => {
+      state.isLoading = false
+      state.error = null
+
+      const user = jwtDecode(payload)
+      if(user){
+        state.user = {
+          email: user.email,
+          fullName: user.fullName,
+          role: user.role
+        }
+        state.isAuthenticated = true
+      }
+    })
+    builder.addCase(AuthAction.validateAsyncThunk.rejected, (state, {payload}) => {
+      state.isLoading = false
+      state.isAuthenticated = false
+      state.error = payload.message
+    })
   }
 });
 
