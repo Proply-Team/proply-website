@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 const FooterComponent = () => {
   return (
-    <footer className="bg-secondary p-3 gap-3 d-flex flex-column justify-content-center align-items-around">
+    <footer className="bg-secondary p-3 gap-3 d-flex flex-column justify-content-center align-items-around rounded-4">
       <div className="d-flex gap-4 justify-content-center">
         <Link to='/' >Home</Link>
         <Link to='/register' >Register</Link>
