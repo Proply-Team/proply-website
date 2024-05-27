@@ -6,6 +6,7 @@ import { useState,useEffect } from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 
 const schema =z.object({
     id: z.string().nullable(),
@@ -46,12 +47,14 @@ export default function ItemForm() {
         if (data.id&&data.id!="") {  
           const itm = {...data};
           dispatch(update(itm));      
+          toast.success("Item successfully updated");
         }else {
             const itm ={
                 ...data,
                 id: new Date().getMilliseconds().toString(),
             };
             dispatch(add(itm));      
+            toast.success("Item successfully added");
         }
         handleReset();
         navigate("/items");

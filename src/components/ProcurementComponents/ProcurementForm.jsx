@@ -6,7 +6,7 @@ import { useState,useEffect } from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-
+import { toast } from "react-toastify";
 
 
 const schema =z.object({
@@ -17,10 +17,10 @@ export default function ProcurementForm() {
     const {proCats} = useSelector((state)=>state.procurementCategory)
     const {cats} = useSelector((state)=>state.category)
     const {itms} = useSelector((state)=>state.item)
-    const [procurementCategory,setProcurementCategory] = useState(["Select Procurement Category",'']);
-    const [itemCategory,setItemCategory] = useState(["Select Item Category",'']);
-    const [item,setItem] = useState(["Select Item",'']);
-    const [detail,setDetail] =useState({item:"",qty:""})
+    const [procurementCategory,setProcurementCategory] = useState(["Select Procurement Category",null]);
+    const [itemCategory,setItemCategory] = useState(["Select Item Category",null]);
+    const [item,setItem] = useState(["Select Item",null]);
+    const [qty,setQty] =useState(0)
     const dispatch = useDispatch();
     const [itemList,setItemList] = useState([]) 
     
@@ -45,10 +45,7 @@ export default function ProcurementForm() {
     
 
     const onSubmit = (data) => {
-        // if (data.id&&data.id!="") {  
-        //   const proc = {...data};
-        //   dispatch(update(proc));      
-        // }else {
+        if (data&&procurementCategory[1]!=null&&itemList!=[]) {  
             const proc ={
                 ...data,
                 id: new Date().getMilliseconds().toString(),
@@ -59,9 +56,12 @@ export default function ProcurementForm() {
             };
             console.log(proc);
             dispatch(add(proc));      
-            // }
             console.log(data);
+            toast.success("Procurement successfully requested");
             navigate("/procurements");
+        }else {
+            toast.error("All fields are required");
+        }
     }
 
     const onChange =(event)=>{
@@ -74,16 +74,22 @@ export default function ProcurementForm() {
     }
         
     const handleAdd = () =>{
-        const items = {
-            id: new Date().getMilliseconds().toString(),
-            item: detail.item,
-            qty: detail.qty,
-            itemCategory: itemCategory[1]
+        if (qty<1) {
+            toast.error("Quantity should be more than 0")
+        } else if (procurementCategory[1]==null&&itemCategory[1]==null&&item[1]==null) {
+            toast.error("All fields are required")
+        } else {
+            const items = {
+                id: new Date().getMilliseconds().toString(),
+                item: item[1],
+                qty: qty,
+                itemCategory: itemCategory[1]
+            }
+            console.log(items);
+            itemList.push(items);
+            console.log(itemList);
+            setQty(0)                        
         }
-        console.log(items);
-        itemList.push(items);
-        console.log(itemList);
-        setDetail({item:"",qty:""})
     }
     
     const navigate = useNavigate();
@@ -134,7 +140,7 @@ export default function ProcurementForm() {
                                     </div>
                                     <div className="mb-2 w-50">
                                         <label className="form-label">Quantity</label>
-                                        <input value={detail.qty} onChange={onChange} className={`form-control rounded-3 border-0 border-bottom `} type="number" name="qty" />
+                                        <input value={qty} onChange={onChange} className={`form-control rounded-3 border-0 border-bottom `} type="number" name="qty" />
                                         {/* {errors.qty && <div className="invalid-feedback">{errors.qty.message}</div>} */}
                                     </div>
                                 </div>
