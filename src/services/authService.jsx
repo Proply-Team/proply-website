@@ -1,15 +1,14 @@
-import axios from 'axios';
+import { proplyInstance } from '../api/proplyInstance';
 
 
 const AuthService = () => {
   const login = async (payload) => {
     try {
-      console.log(payload);
-      const response = await axios.post("/auth/login", payload);
-      console.log(response.data);
+      console.log(payload)
+      const response = await proplyInstance.post("/auth/login", payload);
       
       if (response.data.statusCode === 200) {
-        localStorage.setItem("user",JSON.stringify(response.data))
+        localStorage.setItem("token",JSON.stringify(response.data.data.token))
         return response.data;
       } else {
         throw new Error(response.data.message || 'Login failed');
@@ -20,17 +19,27 @@ const AuthService = () => {
   };
 
   const logout = () => {
-    localStorage.removeItem("user")
+    localStorage.removeItem("token")
   }
 
-  const getCurrentUser = () => {
-    return JSON.parse(localStorage.getItem("user"))
+  const validateToken = async () => {
+      try{
+        const res = await proplyInstance.get("/auth/validate-token")
+        if(res.data.statusCode != 200) throw new Error(res.data.message)
+        
+        const token = localStorage.getItem('token')
+
+        return token
+      }catch(e){
+        localStorage.removeItem('token')
+        throw new Error(e.response?.data?.message || 'Token expired')
+      }
   }
 
   return {
     login,
     logout,
-    getCurrentUser
+    validateToken
   };
 };
 

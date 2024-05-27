@@ -1,7 +1,7 @@
 import { IconBellRinging,IconFileInfo,IconSettings2,IconDoorExit } from "@tabler/icons-react";
 import { Link} from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "../redux/authSlice";
+import { logout } from "../redux/auth/authSlice";
 
 const HeaderComponent = () => {
 
