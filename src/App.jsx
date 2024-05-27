@@ -1,21 +1,10 @@
-import { useState } from 'react'
-// import './App.css'
-import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import Login from './pages/Login.page';
-import Dashboard from './pages/Dashboard.page';
-
-
+import { Outlet } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 function App() {
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  
+  const token = localStorage.getItem('token');
   return (
     <div className='App'>
-    {!isAuthenticated?
-    <Dashboard />
-    :
-    <Navigate to='/login' replace /> }
-
+      <Outlet/>
     </div>
   )
 }
