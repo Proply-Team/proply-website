@@ -1,5 +1,5 @@
 import { IconDeviceFloppy, IconRefresh } from "@tabler/icons-react";
-import { add, update } from "../../redux/procurementCategorySlice";
+import { add, postProcurementCategoryAction, putProcurementCategoryAction, update } from "../../redux/procurementCategorySlice";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState,useEffect } from "react";
@@ -10,9 +10,8 @@ import { toast } from "react-toastify";
 
 
 const schema =z.object({
-    id: z.string().nullable(),
+    procurementCategoryId: z.string().nullable(),
     name: z.string().min(1,"name can not be blank"),
-    isActive: z.boolean()
 })
 
 export default function ProcurementCategoryForm() {
@@ -25,9 +24,8 @@ export default function ProcurementCategoryForm() {
         formState: {errors},
     }=useForm({
         defaultValues:{
-          id: "",
+          procurementCategoryId: "",
           name: "",
-          isActive: false,
         },
         mode: "onChange",
         resolver:zodResolver(schema),
@@ -39,30 +37,31 @@ export default function ProcurementCategoryForm() {
     useEffect(()=>{
         if(proCat){
             reset(proCat);
-            setStatus(proCat.isActive);
         };
     },[proCat]);
 
-    const onSubmit = (data) => {
-      data.isActive=status;
-        if (data.id&&data.id!="") {  
-          const proCat = {...data};
-          dispatch(update(proCat));      
-          toast.success("Procurement category successfully updated");
-        }else {
-            const proCat ={
-                ...data,
-                id: new Date().getMilliseconds().toString(),
-            };
-            dispatch(add(proCat));      
-            toast.success("Procurement category successfully added");
+    const onSubmit = async (data) => {
+        try {
+            if (data.procurementCategoryId&&data.procurementCategoryId!="") {  
+              const proCat = {...data};
+              await dispatch(putProcurementCategoryAction(proCat));      
+              toast.success("Procurement category successfully updated");
+            }else {
+                const proCat ={
+                    ...data,
+                };
+                await dispatch(postProcurementCategoryAction(proCat));      
+                toast.success("Procurement category successfully added");
+            }
+            handleReset();
+            navigate("/procurement-categories");            
+        } catch (error) {
+            console.log(error);
         }
-        handleReset();
-        navigate("/procurement-categories");
     }
 
     const handleReset = () =>{
-        reset({ id:"", name: "", isActive: false })
+        reset({ procurementCategoryId:"", name: "" })
     }
     const navigate = useNavigate();
 
@@ -77,15 +76,6 @@ export default function ProcurementCategoryForm() {
                         <input {...register("name")} type="text" className={`form-control ${errors.name &&"is-invalid"}`} id="name" name="name"/>
                         {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="isActive" className="form-label">
-                            Status
-                        </label>
-                        <div>
-                          <button className={`btn ${status? "bg-success":"bg-danger"} me-2 d-flex align-procurementCategorys-center gap-2 bg-opacity-75 fw-semibold text-white`} type="button" onClick={()=>setStatus(!status)}>{status? "Active":"Nonactive"}</button>
-                        </div>
-                    </div>
-
                     <div className="d-flex gap-2 mt-4 ">
                         <button type="submit" className="btn btn-secondary me-2 d-flex align-procurementCategorys-center gap-2 fw-semibold">
                                 <IconDeviceFloppy size={22} />Submit

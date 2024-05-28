@@ -1,50 +1,47 @@
+import { proplyInstance } from "../api/proplyInstance";
+
 function ProcurementCategoryService() {
-    let proCats = [];
 
-    const create =(proCat) =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (proCat) {
-                    proCats = [...proCats,proCat]
-                    resolve("successfully added procurement category")
-                }else {
-                    reject("procurement category cannot be blank")
-                }
-            }, 2000);
-        })
+    const create = async (payload) =>{
+        console.log(payload);
+        try {
+            if(payload) {
+                const response = await proplyInstance.post("/procurement-categories", payload)
+                return response.data
+            }
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Input failed');
+        }
     }
 
-    const getAll = () =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (proCats.length>0) {
-                    resolve(proCats)
-                }else {
-                    reject("procurement category cannot be blank")
-                }
-            }, 3000);
-        })
-
+    const getAll = async () =>{
+        try {
+            const response = await proplyInstance.get("/procurement-categories")
+            return response.data.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Fetch procurement-categories failed');
+        }
     }
 
-    const update = (proCat) =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (proCat) {
-                    proCats = proCats.map((t)=>{
-                        if(t.id===proCat.id) {
-                            return{...proCat}
-                        }
-                        return t;
-                    })
-                    resolve("successfully updated procurement category")
-                }else {
-                    reject("procurement category cannot be blank")
-                }
-            }, 3000);
-        })
+    const update = async (payload) =>{
+        try {
+            const response = await proplyInstance.put("/procurement-categories", payload)
+            return response.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Update failed');
+        }
     }
 
-    return{getAll,create,update}
+    const remove = async (payload) =>{
+        try {
+            const response = await proplyInstance.delete("/procurement-categories/delete/"+payload.procurementCategoryId)
+            return response.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Update failed');
+        }
+    }
+
+    return{getAll,create,update,remove}
 }
+
 export default ProcurementCategoryService;
