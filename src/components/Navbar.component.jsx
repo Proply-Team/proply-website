@@ -1,7 +1,5 @@
-import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
-import logo from '../assets/react.svg'
-import { IconChevronDown,IconHome2,IconSubtask,IconUsersGroup,IconReplace,IconHomeCog,IconUsers,IconUser,IconDoorExit,IconCategoryPlus } from "@tabler/icons-react";
+import { IconChevronDown,IconHome2,IconSubtask,IconUsersGroup,IconHomeCog,IconUsers,IconUser,IconDoorExit,IconCategoryPlus } from "@tabler/icons-react";
 import "../../node_modules/bootstrap/dist/js/bootstrap.bundle.min";
 import { useDispatch } from "react-redux";
 import { logout, selectAuth } from "../redux/auth/authSlice";

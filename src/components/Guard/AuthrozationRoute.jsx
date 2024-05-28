@@ -20,6 +20,7 @@ export default function AuthrozationRoute({
         }else{
             setPage(<ComponentParams/>)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ComponentParams])
 
     return page
