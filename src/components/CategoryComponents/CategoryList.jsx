@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { IconWriting,IconEraser,IconPlus } from "@tabler/icons-react";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectedCategory, remove,getCategoryAction } from "../../redux/categorySlice";
+import { selectedCategory, deleteCategoryAction,getCategoryAction } from "../../redux/categorySlice";
 
 export default function CategoryList() {
     const{cats,cat,isLoading} = useSelector((state)=>state.category)
@@ -51,7 +51,7 @@ export default function CategoryList() {
                                             <button onClick={()=>{console.log(category); handleSelectedCategory(category)}} className="btn btn-light">
                                                 <IconWriting size={22} color="blue" />
                                             </button>
-                                            <button onClick={()=>dispatch(remove(category.id))} className="btn btn-light text-white">
+                                            <button onClick={()=>{if (!confirm("Delete this item category?")) return; dispatch(deleteCategoryAction(category))}} className="btn btn-light text-white">
                                                 <IconEraser size={22} color="red"/>
                                             </button>
                                         </div>

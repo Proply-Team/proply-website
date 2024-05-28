@@ -1,50 +1,46 @@
+import { useSelector } from "react-redux";
+import { proplyInstance } from "../api/proplyInstance";
+
 function CategoryService() {
-    let cats = [];
 
-    const create =(cat) =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (cat) {
-                    cats = [...cats,cat]
-                    resolve("successfully added category")
-                }else {
-                    reject("category cannot be blank")
-                }
-            }, 2000);
-        })
+    const create = async (payload) =>{
+        try {
+            if(payload) {
+                const response = await proplyInstance.post("/item-categories", payload)
+                return response.data
+            }
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Input failed');
+        }
     }
 
-    const getAll = () =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (cats.length>0) {
-                    resolve(cats)
-                }else {
-                    reject("category cannot be blank")
-                }
-            }, 3000);
-        })
-
+    const getAll = async () =>{
+        try {
+            const response = await proplyInstance.get("/item-categories/active")
+            return response.data.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Fetch item-category failed');
+        }
     }
 
-    const update = (cat) =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (cat) {
-                    cats = cats.map((t)=>{
-                        if(t.id===cat.id) {
-                            return{...cat}
-                        }
-                        return t;
-                    })
-                    resolve("successfully updated category")
-                }else {
-                    reject("category cannot be blank")
-                }
-            }, 3000);
-        })
+    const update = async (payload) =>{
+        try {
+            const response = await proplyInstance.put("/item-categories", payload)
+            return response.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Update failed');
+        }
     }
 
-    return{getAll,create,update}
+    const remove = async (payload) =>{
+        try {
+            const response = await proplyInstance.delete("/item-categories/delete/"+payload.itemCategoryId)
+            return response.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Update failed');
+        }
+    }
+
+    return{getAll,create,update,remove}
 }
 export default CategoryService;
