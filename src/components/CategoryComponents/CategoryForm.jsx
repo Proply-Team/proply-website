@@ -9,6 +9,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 
 const schema =z.object({
+    itemCategoryId: z.string().nullable(),
     name: z.string().min(1,"name can not be blank"),
 })
 
@@ -40,9 +41,8 @@ export default function CategoryForm() {
 
     const onSubmit = async (data) => {
         console.log(data);
-        console.log(cat);
         try {
-            if (cat.itemCategoryId&&cat.itemCategoryId!="") {  
+            if (data.itemCategoryId&&data.itemCategoryId!="") {  
               await dispatch(putCategoryAction({itemCategoryId:cat.itemCategoryId,name:data.name}));
               toast.success("Item category successfully updated");      
             }else {

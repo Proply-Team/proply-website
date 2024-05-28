@@ -14,10 +14,17 @@ export const postDivisionAction = createAsyncThunk('divisions/postDivision',asyn
     return response;
 })
 export const putDivisionAction = createAsyncThunk('divisions/putDivision',async (payload,thunkAPI)=>{
+    console.log(payload);
     const response = await service.update(payload)
     await thunkAPI.dispatch(getDivisionAction())
     return response;
 })
+export const deleteDivisionAction = createAsyncThunk('divisions/deleteDivision',async (payload,thunkAPI)=>{
+    const response = await service.remove(payload)
+    await thunkAPI.dispatch(getDivisionAction())
+    return response;
+})
+
 
 
 const divisionSlice = createSlice ({
@@ -51,49 +58,49 @@ const divisionSlice = createSlice ({
         }
     },
 
-    // extraReducers: (builder) =>{
-    //     builder.addCase(getDivisionAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(getDivisionAction.fulfilled,(state,{payload})=>{
-    //         console.log(payload);
-    //         state.divs=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(getDivisionAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(postDivisionAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(postDivisionAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(postDivisionAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(putDivisionAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(putDivisionAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(putDivisionAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     })
-    //     builder.addCase(deleteDivisionAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(deleteDivisionAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(deleteDivisionAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     })
-    // }
+    extraReducers: (builder) =>{
+        builder.addCase(getDivisionAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(getDivisionAction.fulfilled,(state,{payload})=>{
+            console.log(payload);
+            state.divs=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(getDivisionAction.rejected,(state)=>{
+            state.isLoading=false;
+        }),
+        builder.addCase(postDivisionAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(postDivisionAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(postDivisionAction.rejected,(state)=>{
+            state.isLoading=false;
+        }),
+        builder.addCase(putDivisionAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(putDivisionAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(putDivisionAction.rejected,(state)=>{
+            state.isLoading=false;
+        })
+        builder.addCase(deleteDivisionAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(deleteDivisionAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(deleteDivisionAction.rejected,(state)=>{
+            state.isLoading=false;
+        })
+    }
 })
 export const {add,remove,selectedDivision,update}=divisionSlice.actions;
 export const selectDiv = (state) => state.division;
