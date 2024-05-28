@@ -3,6 +3,7 @@ import profileSlice from './profileSlice';
 import divisionSlice from './divisionSlice';
 import categorySlice from './categorySlice';
 import itemSlice from './itemSlice';
+import userSlice from './userSlice';
 import procurementCategorySlice from './procurementCategorySlice';
 import procurementSlice from './procurementSlice';
 import procurementDetailSlice from './procurementDetailSlice';
@@ -15,6 +16,7 @@ const store = configureStore({
     division: divisionSlice.reducer,
     category: categorySlice.reducer,
     item: itemSlice.reducer,
+    user: userSlice.reducer,
     procurementCategory: procurementCategorySlice.reducer,
     procurement: procurementSlice.reducer,
     procurementDetail: procurementDetailSlice.reducer,

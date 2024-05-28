@@ -48,7 +48,7 @@ const NavbarComponent = () => {
                 </li>
                 <div className="collapse" id="dashboard-collapse-1">
                     <ul className="text-white cursor-pointer d-flex flex-column gap-3 btn-toggle-nav list-unstyled mx-4">
-                            <Link to='/register'>
+                            <Link to='/user'>
                                 <li className="cursor-pointer text-white">
                                     <i className="me-3">
                                         <IconUsers />

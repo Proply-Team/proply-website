@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import Register from "../components/RegisterComponents/Register";
-import RegisterForm from "../components/RegisterComponents/RegisterForm";  
+import Users from "../components/UserComponents/Users";
+import UserList from "../components/UserComponents/UserList";
+import RegisterForm from "../components/UserComponents/RegisterForm";  
 import Divisions from "../components/DivisionComponents/Divisions";
 import DivisionList from "../components/DivisionComponents/DivisionList";
 import DivisionForm from "../components/DivisionComponents/DivisionForm";
@@ -140,21 +141,17 @@ import AuthrozationRoute from "../components/Guard/AuthrozationRoute";
                     ]
                 },
                 {
-                    path: "register",
-                    element: <AuthrozationRoute component={Register} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    path: "user",
+                    element: <AuthrozationRoute component={Users} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
                     children: [
                         {
-                            path: "admin",
-                            element: <AuthrozationRoute component={RegisterForm} roles={['ROLE_ADMIN']} />,
+                            index:true,
+                            element: <UserList />,
                         },
                         {
-                            path: "manager",
+                            path: "register",
                             element: <RegisterForm />,
-                        },
-                        {
-                            path: "employee",
-                            element: <RegisterForm />,
-                        },
+                        }
                     ]
                 }
             ]
