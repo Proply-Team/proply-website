@@ -1,50 +1,47 @@
+import { proplyInstance } from "../api/proplyInstance";
+
 function ItemService() {
-    let itms = [];
 
-    const create =(itm) =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (itm) {
-                    itms = [...itms,itm]
-                    resolve("successfully added item")
-                }else {
-                    reject("item cannot be blank")
-                }
-            }, 2000);
-        })
+    const create = async (payload) =>{
+        console.log(payload);
+        try {
+            if(payload) {
+                const response = await proplyInstance.post("/items", payload)
+                return response.data
+            }
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Input failed');
+        }
     }
 
-    const getAll = () =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (itms.length>0) {
-                    resolve(itms)
-                }else {
-                    reject("item cannot be blank")
-                }
-            }, 3000);
-        })
-
+    const getAll = async () =>{
+        try {
+            const response = await proplyInstance.get("/items/active")
+            return response.data.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Fetch items failed');
+        }
     }
 
-    const update = (itm) =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (itm) {
-                    itms = itms.map((t)=>{
-                        if(t.id===itm.id) {
-                            return{...itm}
-                        }
-                        return t;
-                    })
-                    resolve("successfully updated item")
-                }else {
-                    reject("item cannot be blank")
-                }
-            }, 3000);
-        })
+    const update = async (payload) =>{
+        try {
+            const response = await proplyInstance.put("/items", payload)
+            return response.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Update failed');
+        }
     }
 
-    return{getAll,create,update}
+    const remove = async (payload) =>{
+        try {
+            const response = await proplyInstance.delete("/items/delete/"+payload.itemId)
+            return response.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Update failed');
+        }
+    }
+
+    return{getAll,create,update,remove}
 }
+
 export default ItemService;

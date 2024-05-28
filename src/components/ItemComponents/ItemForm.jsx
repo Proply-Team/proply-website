@@ -1,5 +1,5 @@
 import { IconDeviceFloppy, IconRefresh } from "@tabler/icons-react";
-import { add, update } from "../../redux/itemSlice";
+import { add, postItemAction, putItemAction, update } from "../../redux/itemSlice";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState,useEffect } from "react";
@@ -7,16 +7,18 @@ import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
+import { getCategoryAction, selectCat } from "../../redux/categorySlice";
 
 const schema =z.object({
-    id: z.string().nullable(),
+    itemId: z.string().nullable(),
+    itemCategoryId: z.string().nullable(),
     name: z.string().min(1,"name can not be blank"),
-    isActive: z.boolean()
 })
 
 export default function ItemForm() {
     const {itm} = useSelector((state)=>state.item)
-    const [status,setStatus] = useState(false);
+    const {cats} = useSelector(selectCat)
+    const [itemCategory,setItemCategory] = useState(["Select Item Category",null]);
     const {
         register,
         handleSubmit,
@@ -24,9 +26,9 @@ export default function ItemForm() {
         formState: {errors},
     }=useForm({
         defaultValues:{
-          id: "",
+          itemId: "",
           name: "",
-          isActive: false,
+          itemCategoryId:""
         },
         mode: "onChange",
         resolver:zodResolver(schema),
@@ -36,32 +38,40 @@ export default function ItemForm() {
     const dispatch = useDispatch();
 
     useEffect(()=>{
+        dispatch(getCategoryAction())
         if(itm){
-            reset(itm);
-            setStatus(itm.isActive);
+            reset({itemId:itm.itemId, name:itm.name,itemCategoryId:itm.itemCategoryResponse.itemCategoryId});
+            setItemCategory([itm.itemCategoryResponse.name,itm.itemCategoryResponse.itemCategoryId])
         };
-    },[itm]);
+    },[itm,dispatch]);
 
-    const onSubmit = (data) => {
-      data.isActive=status;
-        if (data.id&&data.id!="") {  
-          const itm = {...data};
-          dispatch(update(itm));      
-          toast.success("Item successfully updated");
-        }else {
-            const itm ={
-                ...data,
-                id: new Date().getMilliseconds().toString(),
-            };
-            dispatch(add(itm));      
-            toast.success("Item successfully added");
+    const onSubmit = async (data) => {
+        if (itemCategory[1]!=null) {
+            try {
+                if (data.itemId&&data.itemId!="") {  
+                    const itm = {id:data.itemId, name:data.name,itemCategoryId:itemCategory[1]};
+                    await dispatch(putItemAction(itm));      
+                    toast.success("Item successfully updated");
+                  }else {
+                      const itm ={
+                          ...data,itemCategoryId:itemCategory[1]
+                      };
+                      await dispatch(postItemAction(itm));      
+                      toast.success("Item successfully added");
+                  }
+                  handleReset();
+                  navigate("/items");                      
+            } catch (error) {
+                console.log(error);
+            }
         }
-        handleReset();
-        navigate("/items");
+        else {
+            toast.error("Choose item category")
+        }
     }
 
     const handleReset = () =>{
-        reset({ id:"", name: "", isActive: false })
+        reset({ itemId:"", name: "", itemCategoryId:"" })
     }
     const navigate = useNavigate();
 
@@ -69,20 +79,25 @@ export default function ItemForm() {
             <>
                 <form autoComplete="off" onSubmit={handleSubmit(onSubmit)} className="shadow-sm p-4 rounded-2 bg-white bg-opacity-75">
                     <h3>Form Item</h3>
+                    <div className="dropdown">
+                        <h6>Item Category</h6>
+                        <button className="btn btn-info dropdown-toggle px-4 fw-semibold" type="button" id="dropdownItemCategory" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {itemCategory[0]}
+                        </button>
+                        <div className="dropdown-menu" aria-labelledby="dropdownItemCategory" >
+                        {cats.map((cat,idx)=>{
+                            return(
+                                <a className="dropdown-item" key={++idx} onClick={()=>setItemCategory([cat.name,cat.itemCategoryId])}>{cat.name}</a>
+                            )
+                        })}
+                        </div>
+                    </div>
                     <div className="mb-3">
                         <label htmlFor="name" className="form-label">
                             Name
                         </label>
                         <input {...register("name")} type="text" className={`form-control ${errors.name &&"is-invalid"}`} id="name" name="name"/>
                         {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="isActive" className="form-label">
-                            Status
-                        </label>
-                        <div>
-                          <button className={`btn ${status? "bg-success":"bg-danger"} me-2 d-flex align-items-center gap-2 bg-opacity-75 fw-semibold text-white`} type="button" onClick={()=>setStatus(!status)}>{status? "Active":"Nonactive"}</button>
-                        </div>
                     </div>
 
                     <div className="d-flex gap-2 mt-4 ">

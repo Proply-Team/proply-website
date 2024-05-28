@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import ItemService from "../services/itemService";
 
 
+
 const service = ItemService();
 
 export const getItemAction = createAsyncThunk('items/getItem',async ()=>{
@@ -15,6 +16,11 @@ export const postItemAction = createAsyncThunk('items/postItem',async (payload,t
 })
 export const putItemAction = createAsyncThunk('items/putItem',async (payload,thunkAPI)=>{
     const response = await service.update(payload)
+    await thunkAPI.dispatch(getItemAction())
+    return response;
+})
+export const deleteItemAction = createAsyncThunk('items/deleteItem',async (payload,thunkAPI)=>{
+    const response = await service.remove(payload)
     await thunkAPI.dispatch(getItemAction())
     return response;
 })
@@ -51,49 +57,49 @@ const itemSlice = createSlice ({
         }
     },
 
-    // extraReducers: (builder) =>{
-    //     builder.addCase(getItemAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(getItemAction.fulfilled,(state,{payload})=>{
-    //         console.log(payload);
-    //         state.itms=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(getItemAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(postItemAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(postItemAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(postItemAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(putItemAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(putItemAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(putItemAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     })
-    //     builder.addCase(deleteItemAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(deleteItemAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(deleteItemAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     })
-    // }
+    extraReducers: (builder) =>{
+        builder.addCase(getItemAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(getItemAction.fulfilled,(state,{payload})=>{
+            console.log(payload);
+            state.itms=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(getItemAction.rejected,(state)=>{
+            state.isLoading=false;
+        }),
+        builder.addCase(postItemAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(postItemAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(postItemAction.rejected,(state)=>{
+            state.isLoading=false;
+        }),
+        builder.addCase(putItemAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(putItemAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(putItemAction.rejected,(state)=>{
+            state.isLoading=false;
+        })
+        builder.addCase(deleteItemAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(deleteItemAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(deleteItemAction.rejected,(state)=>{
+            state.isLoading=false;
+        })
+    }
 })
 export const {add,remove,selectedItem,update}=itemSlice.actions;
 export const selectItem = (state) => state.item;
