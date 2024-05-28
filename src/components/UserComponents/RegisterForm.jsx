@@ -5,12 +5,13 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import moment from 'moment';
-
-
+import {getDivisionAction} from "../../redux/divisionSlice"
+import { postRegisterAdminAction,getUserAction,postRegisterManagerAction,postRegisterEmployeeAction } from '../../redux/userSlice';
+import { useDispatch } from 'react-redux';
+import { selectAuth } from '../../redux/auth/authSlice';
 const schema =z.object({
-  id: z.string().nullable(),
   fullName: z.string().min(1,"Name is required"),
   email: z.string().min(1,"Email is required").email(),
   password: z.string().min(6,"Password has to be more than 5 characters"),
@@ -20,19 +21,24 @@ const schema =z.object({
 
 const RegisterForm = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const {user} = useSelector(selectAuth)
   const{divs}= useSelector((state)=>state.division)
   const [selectedDate, setSelectedDate] = useState('');
-  const [maritalStatus, setMaritalStatus] = useState(['','Options']);
-  const [gender, setGender] = useState(['','Options']);
-  const [division, setDivision] = useState(['','Options']);
+  const [maritalStatus, setMaritalStatus] = useState([null,'Options']);
+  const [gender, setGender] = useState([null,'Options']);
+  const [division, setDivision] = useState([null,'Options']);
+  const [role,setRole] = useState("Choose Role to be Registered");
+
 
   const handleDateChange = (event) => {
-    setSelectedDate(event.target.value);
+    setSelectedDate(event.target.value)
   };
 
-  const formatDate = (date) => {
-    return moment(date).format('LL');
-  };
+  useEffect(()=>{
+    dispatch(getDivisionAction());
+},[dispatch]);
+
 
   const {
         register,
@@ -41,7 +47,6 @@ const RegisterForm = () => {
         formState: { errors },
       } = useForm({
         defaultValues:{
-          id:'',
           fullName:'',
           email:'',
           password:'',
@@ -55,23 +60,52 @@ const RegisterForm = () => {
       });
 
     
-      const onSubmit = (data) => {
-        const registerInputs = {
-          ...data,
-          id: new Date().getMilliseconds().toString(),
-          birthDate: selectedDate,
-          gender: gender[0],
-          maritalStatus: maritalStatus[0],
-          divisionId: division[0],
+      const onSubmit = async (data) => {
+        try {
+          const registerInputs = {
+            ...data,
+            birthDate: moment(selectedDate, "YYYY-MM-DD").valueOf(),
+            gender: gender[0],
+            maritalStatus: maritalStatus[0],
+            divisionId: division[0],
+          }
+          console.log(registerInputs);
+          if (gender[0]!=null&&maritalStatus[0]!=null&&division[0]!=null) {            
+            if (role=="Admin") {
+              await dispatch(postRegisterAdminAction(registerInputs));
+              reset()
+              navigate('/user')
+            } else if (role=="Manager") {
+              await dispatch(postRegisterManagerAction(registerInputs));
+              reset()
+              navigate('/user')
+            } else if (role=="Employee") {
+              await dispatch(postRegisterEmployeeAction(registerInputs));
+              reset()
+              navigate('/user')
+            } else {
+              toast.error("Choose role to be registered")
+            }  
+          } else {
+            toast.error("All fields are required")
+          }
+        } catch (error) {
+          console.log(error);
         }
-        console.log(registerInputs);
-        toast.success("registration success");
-        reset()
-        navigate('/register')
       };
     
   return (
     <div className='d-flex flex-column w-100'>
+      <div className="dropdown">
+        <button className="btn btn-info dropdown-toggle px-4 fw-semibold" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {role}
+        </button>
+        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+          {user.role=='ROLE_ADMIN' && (<a className="dropdown-item" onClick={()=>setRole("Admin")}>Admin</a>)}
+          <a className="dropdown-item" onClick={()=>setRole("Manager")}>Manager</a>
+          <a className="dropdown-item" onClick={()=>setRole("Employee")}>Employee</a>
+        </div>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)} className="shadow-sm p-4 rounded-2 bg-white">
         <div className="mb-2">
           <label className="form-label">Name</label>
@@ -95,8 +129,8 @@ const RegisterForm = () => {
               {gender[1]}
             </button>
             <div className="dropdown-menu" aria-labelledby="gender" >
-              <a className="dropdown-item" onClick={()=>setGender(["female","Female"])}>Female</a>
-              <a className="dropdown-item" onClick={()=>setGender(["male","Male"])}>Male</a>
+              <a className="dropdown-item" onClick={()=>setGender(["FEMALE","Female"])}>Female</a>
+              <a className="dropdown-item" onClick={()=>setGender(["MALE","Male"])}>Male</a>
             </div>
           </div>
         </div>
@@ -107,8 +141,8 @@ const RegisterForm = () => {
               {maritalStatus[1]}
             </button>
             <div className="dropdown-menu" aria-labelledby="maritalStatus" >
-              <a className="dropdown-item" onClick={()=>setMaritalStatus(["married","Married"])}>Married</a>
-              <a className="dropdown-item" onClick={()=>setMaritalStatus(["single","Single"])}>Single</a>
+              <a className="dropdown-item" onClick={()=>setMaritalStatus(["MARRIED","Married"])}>Married</a>
+              <a className="dropdown-item" onClick={()=>setMaritalStatus(["SINGLE","Single"])}>Single</a>
             </div>
           </div>
         </div>
@@ -121,7 +155,7 @@ const RegisterForm = () => {
             <div className="dropdown-menu" aria-labelledby="division" >
               {divs.map((div)=>{
                 return(
-              <a className="dropdown-item" onClick={()=>setDivision([div.id,div.name])}>{div.name}</a>
+              <a key={div.divisionId} className="dropdown-item" onClick={()=>setDivision([div.divisionId,div.name])}>{div.name}</a>
                 )})}
             </div>
           </div>
