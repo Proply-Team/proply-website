@@ -1,50 +1,49 @@
+import { proplyInstance } from "../api/proplyInstance";
+
 function DivisionService() {
-    let divs = [];
 
-    const create =(div) =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (div) {
-                    divs = [...divs,div]
-                    resolve("successfully added division")
-                }else {
-                    reject("divison cannot be blank")
-                }
-            }, 2000);
-        })
+    const create = async (payload) =>{
+        try {
+            if(payload) {
+                const response = await proplyInstance.post("/divisions", payload)
+                return response.data
+            }
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Input failed');
+        }
     }
 
-    const getAll = () =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (divs.length>0) {
-                    resolve(divs)
-                }else {
-                    reject("divison cannot be blank")
-                }
-            }, 3000);
-        })
-
+    const getAll = async () =>{
+        try {
+            const response = await proplyInstance.get("/divisions/active")
+            return response.data.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Fetch division failed');
+        }
     }
 
-    const update = (div) =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (div) {
-                    divs = divs.map((t)=>{
-                        if(t.id===div.id) {
-                            return{...div}
-                        }
-                        return t;
-                    })
-                    resolve("successfully updated divison")
-                }else {
-                    reject("divison cannot be blank")
-                }
-            }, 3000);
-        })
+    const update = async (payload) =>{
+        console.log(payload);
+        const data = {id:payload.divisionId, name:payload.name}
+        console.log(data);
+        try {
+            const response = await proplyInstance.put("/divisions", data)
+            console.log(response);
+            return response.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Update failed');
+        }
     }
 
-    return{getAll,create,update}
+    const remove = async (payload) =>{
+        try {
+            const response = await proplyInstance.delete("/divisions/delete/"+payload.divisionId)
+            return response.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Update failed');
+        }
+    }
+
+    return{getAll,create,update,remove}
 }
 export default DivisionService;

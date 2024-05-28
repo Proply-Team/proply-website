@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { proplyInstance } from "../api/proplyInstance";
 
 function CategoryService() {
