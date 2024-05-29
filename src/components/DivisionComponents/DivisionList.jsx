@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { IconWriting,IconEraser,IconPlus } from "@tabler/icons-react";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectedDivision, remove,getDivisionAction } from "../../redux/divisionSlice";
+import { selectedDivision, deleteDivisionAction,getDivisionAction } from "../../redux/divisionSlice";
 
 export default function DivisionList() {
     const{divs,div,isLoading} = useSelector((state)=>state.division)
@@ -48,10 +48,10 @@ export default function DivisionList() {
                                     <td className="fw-semibold" style={{color:division.isActive?'green':'red'}}>{division.isActive? "Active":"Nonactive"}</td>
                                     <td>
                                         <div className="d-flex gap-2 justify-content-center">
-                                            <button onClick={()=>{console.log(division); handleSelectedDivision(division)}} className="btn btn-light">
+                                            <button onClick={()=>{handleSelectedDivision(division)}} className="btn btn-light">
                                                 <IconWriting size={22} color="blue" />
                                             </button>
-                                            <button onClick={()=>dispatch(remove(division.id))} className="btn btn-light text-white">
+                                            <button onClick={()=>{if (!confirm("Delete this division?")) return; dispatch(deleteDivisionAction(division))}} className="btn btn-light text-white">
                                                 <IconEraser size={22} color="red"/>
                                             </button>
                                         </div>

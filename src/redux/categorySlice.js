@@ -18,6 +18,11 @@ export const putCategoryAction = createAsyncThunk('categories/putCategory',async
     await thunkAPI.dispatch(getCategoryAction())
     return response;
 })
+export const deleteCategoryAction = createAsyncThunk('categories/deleteCategory',async (payload,thunkAPI)=>{
+    const response = await service.remove(payload)
+    await thunkAPI.dispatch(getCategoryAction())
+    return response;
+})
 
 
 const categorySlice = createSlice ({
@@ -51,49 +56,49 @@ const categorySlice = createSlice ({
         }
     },
 
-    // extraReducers: (builder) =>{
-    //     builder.addCase(getCategoryAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(getCategoryAction.fulfilled,(state,{payload})=>{
-    //         console.log(payload);
-    //         state.cats=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(getCategoryAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(postCategoryAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(postCategoryAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(postCategoryAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(putCategoryAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(putCategoryAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(putCategoryAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     })
-    //     builder.addCase(deleteCategoryAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(deleteCategoryAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(deleteCategoryAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     })
-    // }
+    extraReducers: (builder) =>{
+        builder.addCase(getCategoryAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(getCategoryAction.fulfilled,(state,{payload})=>{
+            console.log(payload);
+            state.cats=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(getCategoryAction.rejected,(state)=>{
+            state.isLoading=false;
+        }),
+        builder.addCase(postCategoryAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(postCategoryAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(postCategoryAction.rejected,(state)=>{
+            state.isLoading=false;
+        }),
+        builder.addCase(putCategoryAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(putCategoryAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(putCategoryAction.rejected,(state)=>{
+            state.isLoading=false;
+        }),
+        builder.addCase(deleteCategoryAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(deleteCategoryAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(deleteCategoryAction.rejected,(state)=>{
+            state.isLoading=false;
+        })
+    }
 })
 export const {add,remove,selectedCategory,update}=categorySlice.actions;
 export const selectCat = (state) => state.category;

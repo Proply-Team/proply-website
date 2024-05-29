@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import Dashboard from "../pages/Dashboard.page";
-import Register from "../components/RegisterComponents/Register";
-import RegisterForm from "../components/RegisterComponents/RegisterForm";  
+import Users from "../components/UserComponents/Users";
+import UserList from "../components/UserComponents/UserList";
+import RegisterForm from "../components/UserComponents/RegisterForm";  
 import Divisions from "../components/DivisionComponents/Divisions";
 import DivisionList from "../components/DivisionComponents/DivisionList";
 import DivisionForm from "../components/DivisionComponents/DivisionForm";
@@ -23,124 +23,140 @@ import Profile from "../components/ProfileComponents/Profile";
 import ProfileEdit from "../components/ProfileComponents/ProfileEdit";
 import ProfileUser from "../components/ProfileComponents/ProfileUser";
 import Login from "../pages/Login.page";
+import MenuComponent from "../components/Menu.component";
+import AuthGuard from "../components/Guard/AuthGuard";
+import LayoutMain from "../components/Layouts/LayoutMain/LayoutMain";
+import AuthrozationRoute from "../components/Guard/AuthrozationRoute";
 
 
   export const router = createBrowserRouter([
     {
-      path: "/",
-      element: <App />,
-      children: [
+        path: "/",
+        element: <App/>,
+        children: [
         {
-            path: "register",
-            element: <Register />,
+            path: 'auth',
+            element: <AuthGuard/>,
             children: [
                 {
-                    path: "admin",
-                    element: <RegisterForm />,
+                    path: 'login',
+                    element: <Login/>
                 },
-                {
-                    path: "manager",
-                    element: <RegisterForm />,
-                },
-                {
-                    path: "employee",
-                    element: <RegisterForm />,
-                },
-            ]
+            ] 
         },
         {
-            path: "divisions",
-            element: <Divisions />,
+            path: '',
+            element: <LayoutMain/>,
             children: [
                 {
                     index:true,
-                    element: <DivisionList />,
+                    element: <MenuComponent />,
                 },
                 {
-                    path: "form",
-                    element: <DivisionForm />,
-                }
-            ]
-        },
-        {
-            path: "item-categories",
-            element: <Categories />,
-            children: [
-                {
-                    index:true,
-                    element: <CategoryList />,
+                    path: "divisions",
+                    element: <AuthrozationRoute component={Divisions} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    children: [
+                        {
+                            index:true,
+                            element: <DivisionList />,
+                        },
+                        {
+                            path: "form",
+                            element: <DivisionForm />,
+                        }
+                    ]
                 },
                 {
-                    path: "form",
-                    element: <CategoryForm />,
-                }
-            ]
-        },
-        {
-            path: "procurement-categories",
-            element: <ProcurementCategories />,
-            children: [
-                {
-                    index:true,
-                    element: <ProcurementCategoryList />,
+                    path: "item-categories",
+                    element: <AuthrozationRoute component={Categories} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    children: [
+                        {
+                            index:true,
+                            element: <CategoryList />,
+                        },
+                        {
+                            path: "form",
+                            element: <CategoryForm />,
+                        }
+                    ]
                 },
                 {
-                    path: "form",
-                    element: <ProcurementCategoryForm />,
-                }
-            ]
-        },
-        {
-            path: "items",
-            element: <Items />,
-            children: [
-                {
-                    index:true,
-                    element: <ItemList />,
+                    path: "procurement-categories",
+                    element: <AuthrozationRoute component={ProcurementCategories} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    children: [
+                        {
+                            index:true,
+                            element: <ProcurementCategoryList />,
+                        },
+                        {
+                            path: "form",
+                            element: <ProcurementCategoryForm />,
+                        }
+                    ]
                 },
                 {
-                    path: "form",
-                    element: <ItemForm />,
-                }
-            ]
-        },
-        {
-            path: "procurements",
-            element: <Procurements />,
-            children: [
-                {
-                    index:true,
-                    element: <ProcurementList />,
+                    path: "items",
+                    element: <AuthrozationRoute component={Items} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    children: [
+                        {
+                            index:true,
+                            element: <ItemList />,
+                        },
+                        {
+                            path: "form",
+                            element: <ItemForm />,
+                        }
+                    ]
                 },
                 {
-                    path: "form",
-                    element: <ProcurementForm />,
+                    path: "procurements",
+                    element: <Procurements />,
+                    children: [
+                        {
+                            index:true,
+                            element: <ProcurementList />,
+                        },
+                        {
+                            path: "form",
+                            element: <ProcurementForm />,
+                        },
+                        {
+                            path: "id",
+                            element: <ProcurementDetail />,
+                        }
+                    ]
                 },
                 {
-                    path: "id",
-                    element: <ProcurementDetail />,
-                }
-            ]
-        },
-        {
-            path: "profile",
-            element: <Profile />,
-            children: [
-                {
-                    index:true,
-                    element: <ProfileUser />,
+                    path: "profile",
+                    element: <Profile />,
+                    children: [
+                        {
+                            index:true,
+                            element: <ProfileUser />,
+                        },
+                        {
+                            path: "edit",
+                            element: <ProfileEdit />,
+                        }
+                    ]
                 },
                 {
-                    path: "edit",
-                    element: <ProfileEdit />,
+                    path: "user",
+                    element: <AuthrozationRoute component={Users} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    children: [
+                        {
+                            index:true,
+                            element: <UserList />,
+                        },
+                        {
+                            path: "register",
+                            element: <RegisterForm />,
+                        }
+                    ]
                 }
             ]
         }
       ]
-    },
-    {
-        path: "/login",
-        element: <Login />,
     }
   ]);
   

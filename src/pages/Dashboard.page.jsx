@@ -1,4 +1,3 @@
-import React from 'react'
 import HeaderComponent from '../components/Header.component';
 import FooterComponent from '../components/Footer.component';
 import NavbarComponent from '../components/Navbar.component';
@@ -9,18 +8,16 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
   return (
-    <div className="d-flex flex-column bg-light" style={{minHeight:'100'}} >
-      <header className='d-flex' >
-        <HeaderComponent />
-      </header>
-      <main className='d-flex flex-row' >
-        <div style={{width:'300px',height:'100vh', overflow:'scroll'}}>
+    <div className="d-flex bg-light my-2" style={{minHeight:'100vh'}} >
+        <div className='left-component' style={{width:'300px',height:'100vh', position:'fixed'}} >
           <NavbarComponent />
         </div>
-        <div className='d-flex flex-column justify-content-between p-4 flex-grow-1'>
+      <main className='d-flex flex-column right-component w-100' style={{marginLeft:320}}  >
+          <HeaderComponent />
+          <div className='p-3 flex-fill'>
           <Outlet />
+          </div>
           <FooterComponent />
-        </div>
       </main>
       <ToastContainer 
         position="top-right"

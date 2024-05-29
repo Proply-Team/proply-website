@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import ProcurementCategoryService from "../services/procurementCategoryService";
 
 
+
 const service = ProcurementCategoryService();
 
 export const getProcurementCategoryAction = createAsyncThunk('procurement-categories/getProcurementCategory',async ()=>{
@@ -15,6 +16,11 @@ export const postProcurementCategoryAction = createAsyncThunk('procurement-categ
 })
 export const putProcurementCategoryAction = createAsyncThunk('procurement-categories/putProcurementCategory',async (payload,thunkAPI)=>{
     const response = await service.update(payload)
+    await thunkAPI.dispatch(getProcurementCategoryAction())
+    return response;
+})
+export const deleteProcurementCategoryAction = createAsyncThunk('procurement-categories/deleteProcurementCategory',async (payload,thunkAPI)=>{
+    const response = await service.remove(payload)
     await thunkAPI.dispatch(getProcurementCategoryAction())
     return response;
 })
@@ -51,49 +57,49 @@ const procurementCategorySlice = createSlice ({
         }
     },
 
-    // extraReducers: (builder) =>{
-    //     builder.addCase(getProcurementCategoryAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(getProcurementCategoryAction.fulfilled,(state,{payload})=>{
-    //         console.log(payload);
-    //         state.proCats=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(getProcurementCategoryAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(postProcurementCategoryAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(postProcurementCategoryAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(postProcurementCategoryAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(putProcurementCategoryAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(putProcurementCategoryAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(putProcurementCategoryAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     })
-    //     builder.addCase(deleteProcurementCategoryAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(deleteProcurementCategoryAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(deleteProcurementCategoryAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     })
-    // }
+    extraReducers: (builder) =>{
+        builder.addCase(getProcurementCategoryAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(getProcurementCategoryAction.fulfilled,(state,{payload})=>{
+            console.log(payload);
+            state.proCats=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(getProcurementCategoryAction.rejected,(state)=>{
+            state.isLoading=false;
+        }),
+        builder.addCase(postProcurementCategoryAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(postProcurementCategoryAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(postProcurementCategoryAction.rejected,(state)=>{
+            state.isLoading=false;
+        }),
+        builder.addCase(putProcurementCategoryAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(putProcurementCategoryAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(putProcurementCategoryAction.rejected,(state)=>{
+            state.isLoading=false;
+        })
+        builder.addCase(deleteProcurementCategoryAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(deleteProcurementCategoryAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(deleteProcurementCategoryAction.rejected,(state)=>{
+            state.isLoading=false;
+        })
+    }
 })
 export const {add,remove,selectedProcurementCategory,update}=procurementCategorySlice.actions;
 export const selectProCat = (state) => state.procurementCategory;

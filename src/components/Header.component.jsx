@@ -1,7 +1,7 @@
 import { IconBellRinging,IconFileInfo,IconSettings2,IconDoorExit } from "@tabler/icons-react";
 import { Link} from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "../redux/authSlice";
+import { logout } from "../redux/auth/authSlice";
 
 const HeaderComponent = () => {
 
@@ -11,7 +11,7 @@ const HeaderComponent = () => {
   }
 
   return(
-    <header className="d-flex justify-content-between align-items-center shadow-sm px-4 py-2 w-100 m-2 sticky-top" style={{backgroundColor:'#4D869C', borderRadius:25}}>
+    <header className="d-flex justify-content-between align-items-center shadow-sm px-4 py-2 w-100 sticky-top bg-primary rounded-4" >
     <div>
         Logo
     </div>

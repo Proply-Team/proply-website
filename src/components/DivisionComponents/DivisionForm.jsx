@@ -1,23 +1,21 @@
 import { IconDeviceFloppy, IconRefresh } from "@tabler/icons-react";
-import { add, update } from "../../redux/divisionSlice";
+import { putDivisionAction, selectDiv,postDivisionAction } from "../../redux/divisionSlice";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState,useEffect } from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import ToggleButton from 'react-bootstrap/ToggleButton';
+import { toast } from "react-toastify";
+
 
 const schema =z.object({
-    id: z.string().nullable(),
+    divisionId: z.string().nullable(),
     name: z.string().min(1,"name can not be blank"),
-    isActive: z.boolean()
 })
 
 export default function DivisionForm() {
-    const {div} = useSelector((state)=>state.division)
-    const [status,setStatus] = useState(false);
+    const {div} = useSelector(selectDiv)
     const {
         register,
         handleSubmit,
@@ -25,7 +23,7 @@ export default function DivisionForm() {
         formState: {errors},
     }=useForm({
         defaultValues:{
-          id: "",
+          divisionId: "",
           name: "",
           isActive: false,
         },
@@ -39,28 +37,33 @@ export default function DivisionForm() {
     useEffect(()=>{
         if(div){
             reset(div);
-            setStatus(div.isActive);
         };
     },[div]);
 
-    const onSubmit = (data) => {
-      data.isActive=status;
-        if (data.id&&data.id!="") {  
-          const div = {...data};
-          dispatch(update(div));      
-        }else {
-            const div ={
-                ...data,
-                id: new Date().getMilliseconds().toString(),
-            };
-            dispatch(add(div));      
+    const onSubmit = async (data) => {
+        console.log(data);
+        try {
+            if (data.divisionId&&data.divisionId!="") {  
+              await dispatch(putDivisionAction({divisionId:div.divisionId,name:data.name}));
+              toast.success("Division successfully updated");      
+            }else {
+                const div ={
+                    ...data,
+                    isActive:true
+                };
+                await dispatch(postDivisionAction(div));
+                toast.success("Division successfully added");
+          
+            }            
+        } catch (error) {
+            console.log(error);
         }
         handleReset();
         navigate("/divisions");
     }
 
     const handleReset = () =>{
-        reset({ id:"", name: "", isActive: false })
+        reset({ divisionId:"", name: "", isActive: false })
     }
     const navigate = useNavigate();
 
@@ -75,15 +78,6 @@ export default function DivisionForm() {
                         <input {...register("name")} type="text" className={`form-control ${errors.name &&"is-invalid"}`} id="name" name="name"/>
                         {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="isActive" className="form-label">
-                            Status
-                        </label>
-                        <div>
-                          <button className={`btn ${status? "bg-success":"bg-danger"} me-2 d-flex align-items-center gap-2 bg-opacity-75 fw-semibold text-white`} type="button" onClick={()=>setStatus(!status)}>{status? "Active":"Nonactive"}</button>
-                        </div>
-                    </div>
-
                     <div className="d-flex gap-2 mt-4 ">
                         <button type="submit" className="btn btn-secondary me-2 d-flex align-items-center gap-2 fw-semibold">
                                 <IconDeviceFloppy size={22} />Submit

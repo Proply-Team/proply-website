@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { IconWriting,IconEraser,IconPlus } from "@tabler/icons-react";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectedProcurementCategory, remove,getProcurementCategoryAction } from "../../redux/procurementCategorySlice";
+import { selectedProcurementCategory, deleteProcurementCategoryAction,getProcurementCategoryAction } from "../../redux/procurementCategorySlice";
 
 export default function ProcurementCategoryList() {
     const{proCats,isLoading} = useSelector((state)=>state.procurementCategory)
@@ -51,7 +51,7 @@ export default function ProcurementCategoryList() {
                                             <button onClick={()=>{console.log(procurementCategory); handleSelectedProcurementCategory(procurementCategory)}} className="btn btn-light">
                                                 <IconWriting size={22} color="blue" />
                                             </button>
-                                            <button onClick={()=>dispatch(remove(procurementCategory.id))} className="btn btn-light text-white">
+                                            <button onClick={()=>{if (!confirm("Delete this procurement category?")) return;dispatch(deleteProcurementCategoryAction(procurementCategory))}} className="btn btn-light text-white">
                                                 <IconEraser size={22} color="red"/>
                                             </button>
                                         </div>
