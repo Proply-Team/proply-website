@@ -57,14 +57,25 @@ function UserService() {
     }
 
     const update = async (payload) =>{
-        try {
-            console.log(payload);
-            const response = await proplyInstance.put("/users", payload)
-            return response.data
-        } catch (error) {
-            throw new Error(error.response?.data?.message || 'Update failed');
-        }
-    }
+        console.log(payload);
+            const formData = new FormData();
+          
+            Object.entries(payload).forEach(([key, value]) => {
+              formData.append(key, value);
+            });
+            try {
+                console.log(formData);
+                const response = await fetch("https://proply-backend-jjwesamxia-as.a.run.app/api/v1/users", {
+                    method: 'PUT',
+                    headers:{
+                    'Content-Type' : 'multipart/form-data',},
+                    body: formData
+              })
+            } catch (error) {
+              console.error('There was a problem with your fetch operation:', error);
+            }
+          }          
+    
 
     const remove = async (payload) =>{
         try {
