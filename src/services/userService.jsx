@@ -49,7 +49,7 @@ function UserService() {
 
     const getCurrentUser = async (payload) =>{
         try {
-            const response = await proplyInstance.post("/users/email",payload)
+            const response = await proplyInstance.post("/users/email",{email: payload})
             return response.data.data
         } catch (error) {
             throw new Error(error.response?.data?.message || 'Fetch current user failed');

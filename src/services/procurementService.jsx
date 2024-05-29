@@ -1,30 +1,31 @@
+import { proplyInstance } from "../api/proplyInstance";
+
 function ProcurementService() {
     let procs = [];
 
-    const create =(proc) =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (proc) {
-                    procs = [...procs,proc]
-                    resolve("successfully request procurement")
-                }else {
-                    reject("procurement cannot be blank")
-                }
-            }, 2000);
-        })
+    const create = async (proc) =>{
+        try{
+            console.log(proc)
+            const res = await proplyInstance.post("/procurements", proc)
+            return res.data
+        }catch(e){
+            throw new Error(e.message)
+        }
     }
 
-    const getAll = () =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (procs.length>0) {
-                    resolve(procs)
-                }else {
-                    reject("procurement cannot be blank")
-                }
-            }, 3000);
-        })
+    const getAll = async (payload) =>{
+        try{
+            let res;
+            if(payload){
+                res = await proplyInstance.get(`/procurements/search?user-id=${payload}`)
+            }else{
+                res = await proplyInstance.get("/procurements")
+            }
 
+            return res.data
+        }catch(e){
+            throw new Error(e)
+        }
     }
 
     const update = (proc) =>{
