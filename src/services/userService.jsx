@@ -58,6 +58,7 @@ function UserService() {
 
     const update = async (payload) =>{
         try {
+            console.log(payload);
             const response = await proplyInstance.put("/users", payload)
             return response.data
         } catch (error) {
