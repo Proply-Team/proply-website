@@ -11,6 +11,8 @@ import {getDivisionAction} from "../../redux/divisionSlice"
 import { postRegisterAdminAction,getUserAction,postRegisterManagerAction,postRegisterEmployeeAction } from '../../redux/userSlice';
 import { useDispatch } from 'react-redux';
 import { selectAuth } from '../../redux/auth/authSlice';
+
+
 const schema =z.object({
   fullName: z.string().min(1,"Name is required"),
   email: z.string().min(1,"Email is required").email(),

@@ -47,14 +47,14 @@ function UserService() {
         }
     }
 
-    // const getById = async (payload) =>{
-    //     try {
-    //         const response = await proplyInstance.get("/users/")
-    //         return response.data.data
-    //     } catch (error) {
-    //         throw new Error(error.response?.data?.message || 'Fetch users failed');
-    //     }
-    // }
+    const getCurrentUser = async (payload) =>{
+        try {
+            const response = await proplyInstance.post("/users/email",payload)
+            return response.data.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Fetch current user failed');
+        }
+    }
 
     const update = async (payload) =>{
         try {
@@ -74,7 +74,7 @@ function UserService() {
         }
     }
 
-    return{getAll,createAdmin,createManager,createEmployee,update,remove}
+    return{getAll,createAdmin,createManager,createEmployee,update,remove,getCurrentUser}
 }
 
 export default UserService;
