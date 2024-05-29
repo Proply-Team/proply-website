@@ -44,6 +44,7 @@ const userSlice = createSlice ({
     initialState:{
         usrs:[],
         usr:null,
+        current:null,
         isLoading:false,
         message:"",
     },
@@ -82,9 +83,17 @@ const userSlice = createSlice ({
         builder.addCase(getUserAction.rejected,(state)=>{
             state.isLoading=false;
         }),
-        builder.addCase(getCurrentUserAction.fulfilled, (state, {payload}) => {
-            state.usr = payload
-        })
+        builder.addCase(getCurrentUserAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(getCurrentUserAction.fulfilled,(state,{payload})=>{
+            console.log(payload);
+            state.current=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(getCurrentUserAction.rejected,(state)=>{
+            state.isLoading=false;
+        }),
         builder.addCase(postRegisterAdminAction.pending,(state)=>{
             state.isLoading= true;
         }),
