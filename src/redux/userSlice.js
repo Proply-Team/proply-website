@@ -9,7 +9,7 @@ export const getUserAction = createAsyncThunk('users/getUser',async ()=>{
     return await service.getAll();
 })
 
-export const getCurrentUserAction = createAsyncThunk('users/getCurrentUser',async (payload,thunkAPI)=>{
+export const getCurrentUserAction = createAsyncThunk('users/getCurrentUser',async (payload)=>{
     return await service.getCurrentUser(payload);
 })
 export const postRegisterAdminAction = createAsyncThunk('users/postRegisterAdmin',async (payload,thunkAPI)=>{
@@ -82,6 +82,9 @@ const userSlice = createSlice ({
         builder.addCase(getUserAction.rejected,(state)=>{
             state.isLoading=false;
         }),
+        builder.addCase(getCurrentUserAction.fulfilled, (state, {payload}) => {
+            state.usr = payload
+        })
         builder.addCase(postRegisterAdminAction.pending,(state)=>{
             state.isLoading= true;
         }),

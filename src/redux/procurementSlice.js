@@ -4,15 +4,21 @@ import ProcurementService from "../services/procurementService";
 
 const service = ProcurementService();
 
-export const getProcurementAction = createAsyncThunk('procurements/getProcurement',async ()=>{
-    return await service.getAll();
+export const getProcurementAction = createAsyncThunk('procurements/getProcurement',async (payload, thunnkAPI)=>{
+    try{
+        return await service.getAll(payload);
+    }catch(e){
+        return thunnkAPI.rejectWithValue(e.message)
+    }
 })
 
 export const postProcurementAction = createAsyncThunk('procurements/postProcurement',async (payload,thunkAPI)=>{
     const response = await service.create(payload)
-    await thunkAPI.dispatch(getProcurementAction())
+    console.log(response)
+    await thunkAPI.dispatch(getProcurementAction(payload.userId))
     return response;
 })
+
 export const putProcurementAction = createAsyncThunk('procurements/putProcurement',async (payload,thunkAPI)=>{
     const response = await service.update(payload)
     await thunkAPI.dispatch(getProcurementAction())
@@ -51,49 +57,32 @@ const procurementSlice = createSlice ({
         }
     },
 
-    // extraReducers: (builder) =>{
-    //     builder.addCase(getProcurementAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(getProcurementAction.fulfilled,(state,{payload})=>{
-    //         console.log(payload);
-    //         state.procs=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(getProcurementAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(postProcurementAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(postProcurementAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(postProcurementAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(putProcurementAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(putProcurementAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(putProcurementAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     })
-    //     builder.addCase(deleteProcurementAction.pending,(state)=>{
-    //         state.isLoading= true;
-    //     }),
-    //     builder.addCase(deleteProcurementAction.fulfilled,(state,{payload})=>{
-    //         state.message=payload;
-    //         state.isLoading=false;
-    //     }),
-    //     builder.addCase(deleteProcurementAction.rejected,(state)=>{
-    //         state.isLoading=false;
-    //     })
-    // }
+    extraReducers: (builder) =>{
+        builder.addCase(getProcurementAction.pending, (state) => {
+            state.isLoading = true
+        })
+        builder.addCase(getProcurementAction.fulfilled, (state, {payload}) => {
+            state.isLoading = false
+
+            state.procs = payload.data
+        })
+        builder.addCase(getProcurementAction.rejected, (state, {payload}) => {
+            state.isLoading = false
+            console.log(payload)
+            state.message = payload.message
+        })
+
+        builder.addCase(postProcurementAction.pending, (state) => {
+            state.isLoading = true
+        })
+        builder.addCase(postProcurementAction.fulfilled, (state, {payload}) => {
+            state.isLoading = false
+            state.message = payload.message
+        })
+        builder.addCase(postProcurementAction.rejected, (state) => {
+            state.isLoading = false
+        })
+    }
 })
 export const {add,remove,selectedProcurement,update}=procurementSlice.actions;
 export const selectProcurement = (state) => state.procurement;

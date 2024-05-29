@@ -1,200 +1,311 @@
-import { IconDeviceFloppy, IconPlus,IconMinus } from "@tabler/icons-react";
-import { add, update } from "../../redux/procurementSlice";
 import { useSelector,useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useState,useEffect } from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
+import { getProcurementCategoryAction } from "../../redux/procurementCategorySlice";
+import { getItemAction } from "../../redux/itemSlice";
+import { getCategoryAction } from "../../redux/categorySlice";
+import { getDivisionAction } from "../../redux/divisionSlice";
+import { useRef } from "react";
+import { createPortal } from "react-dom";
+import ProcurementApproval from "./ProcurementApproval";
+import { getCurrentUserAction, getUserAction } from "../../redux/userSlice";
+import { postProcurementAction } from "../../redux/procurementSlice";
+import { useNavigate } from "react-router-dom";
 
 
-const schema =z.object({
-    id: z.string().nullable(),
+const schema = z.object({
+    userId: z.string().nullable(),
+    procurementCategoryId: z.string().min(1, "Procurement Category Id required"),
+    procurementDetailRequests:  z.array(z.object({
+        itemId: z.string().or(z.number()).nullable(),
+        quantity: z.string().nullable()
+    })).min(1, "Minimal 1 approval required"),
+    approvalRequests: z.array(z.object({
+        userId: z.string().nullable()
+    })).min(1, "Minimal 1 approval required"),
+    level: z.number().nullable()
 })
 
 export default function ProcurementForm() {
     const {proCats} = useSelector((state)=>state.procurementCategory)
-    const {cats} = useSelector((state)=>state.category)
+    // const {cats} = useSelector((state)=>state.category)
+    const {divs} = useSelector((state) => state.division)
+    const {usrs, usr} = useSelector((state) => state.user)
+    const {user} = useSelector((state) => state.auth)
     const {itms} = useSelector((state)=>state.item)
-    const [procurementCategory,setProcurementCategory] = useState(["Select Procurement Category",null]);
-    const [itemCategory,setItemCategory] = useState(["Select Item Category",null]);
-    const [item,setItem] = useState(["Select Item",null]);
-    const [qty,setQty] =useState(0)
-    const dispatch = useDispatch();
-    const [itemList,setItemList] = useState([]) 
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const approvalRef = useRef()
+    
+    const [elementApprove, SetElementApprove] = useState([])
+    const [isSetProCat, setIsSetProCat] = useState(false)
+    const [item, setItem] = useState({
+        itemId: '',
+        quantity: 0
+    })
     
     const {
+        register,
         handleSubmit,
+        watch,
+        formState: {isValid},
         reset,
-        formState: {errors},
+        getValues,
+        setValue,
+        trigger
     }=useForm({
         defaultValues:{
-          id: "",
-          procurementCategory:"",
-          items: [],
-          requestedAt: "",
-          user:""
+          userId: "",
+          procurementCategoryId:"",
+          procurementDetailRequests: [],
+          approvalRequests: [],
+          level: 0
         },
+        mode: 'all',
         resolver:zodResolver(schema),
-        
     });
 
+    const fetchData = async () => {
+        await dispatch(getProcurementCategoryAction())
+        await dispatch(getItemAction())
+        await dispatch(getCategoryAction())
+        await dispatch(getDivisionAction())
+        await dispatch(getUserAction())
+        await dispatch(getCurrentUserAction(user.email))
+    }
+
     useEffect(()=>{
-    },[itemList]);
+        fetchData()
+    },[]);
     
 
-    const onSubmit = (data) => {
-        if (data&&procurementCategory[1]!=null&&itemList!=[]) {  
-            const proc ={
-                ...data,
-                id: new Date().getMilliseconds().toString(),
-                user:"this user",
-                procurementCategory: procurementCategory[1],
-                requestedAt: Date.now(),
-                items: itemList
-            };
-            console.log(proc);
-            dispatch(add(proc));      
-            console.log(data);
-            toast.success("Procurement successfully requested");
-            navigate("/procurements");
-        }else {
-            toast.error("All fields are required");
+    const onSubmit = async (data) => {
+        data = {
+            ...data,
+            userId: usr.userId,
+            procurementDetailRequests: [
+                ...data.procurementDetailRequests.map(val => {
+                    if(typeof val.itemId == 'number'){
+                        val.itemId = null
+                    }
+                    val.quantity = parseInt(val.quantity)
+                    return val
+                })
+            ],
+            level: data.approvalRequests.length
+        }
+
+        const res = await dispatch(postProcurementAction(data))
+        if(await res?.payload?.statusCode == 201){
+            return navigate("/procurements")
         }
     }
 
-    const onChange =(event)=>{
-        setDetail({ ...detail, [event.target.name]: event.target.value })
+    const onSaveProcurementCategory = () => {
+        setIsSetProCat(true)
     }
-    const handleRemove=(id)=>{
-        console.log(id);
-        console.log(itemList);
-        setItemList(itemList.filter(procDet => procDet.id !== id));
-    }
+    
+    const onChangeItem = (e) => {
+        const {name, value} = e.target
         
-    const handleAdd = () =>{
-        if (qty<1) {
-            toast.error("Quantity should be more than 0")
-        } else if (procurementCategory[1]==null&&itemCategory[1]==null&&item[1]==null) {
-            toast.error("All fields are required")
-        } else {
-            const items = {
-                id: new Date().getMilliseconds().toString(),
-                item: item[1],
-                qty: qty,
-                itemCategory: itemCategory[1]
-            }
-            console.log(items);
-            itemList.push(items);
-            console.log(itemList);
-            setQty(0)                        
+        const itemForm = {
+            ...item,
+            [name]: value
         }
-    }
-    
-    const navigate = useNavigate();
-        return(
-            <>
-                <form autoComplete="off" onSubmit={handleSubmit(onSubmit)} className="mb-3 d-flex gap-5 shadow-sm p-4 rounded-2 bg-white w-100">
-                        <div className="d-flex flex-column gap-3 w-75">
-                            <div className="dropdown">
-                                <h6>Procurement Category</h6>
-                                <button className="btn btn-info dropdown-toggle px-4 fw-semibold" type="button" id="dropdownProcurementCategory" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {procurementCategory[0]}
-                                </button>
-                                <div className="dropdown-menu" aria-labelledby="dropdownProcurementCategory" >
-                                    {proCats.map((proCat)=>{
-                                        return(
-                                            <a className="dropdown-item" onClick={()=>setProcurementCategory([proCat.name,proCat.name])}>{proCat.name}</a>
-                                        )
-                                    })}
-                                </div>
-                            </div>
-                            <div className="d-flex flex-column mb-3 gap-3">
-                                <div className="dropdown">
-                                    <h6>Item Category</h6>
-                                    <button className="btn btn-info dropdown-toggle px-4 fw-semibold" type="button" id="dropdownItemCategory" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {itemCategory[0]}
-                                    </button>
-                                    <div className="dropdown-menu" aria-labelledby="dropdownItemCategory" >
-                                    {cats.map((cat)=>{
-                                        return(
-                                            <a className="dropdown-item" onClick={()=>setItemCategory([cat.name,cat.name])}>{cat.name}</a>
-                                        )
-                                    })}
-                                    </div>
-                                </div>
-                                <div className="d-flex flex-column gap-4">
-                                    <div className="dropdown">
-                                        <h6>Item Name</h6>
-                                        <button className="btn btn-info dropdown-toggle px-4 fw-semibold" type="button" id="dropdownItem" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            {item[0]}
-                                        </button>
-                                        <div className="dropdown-menu" aria-labelledby="dropdownItem" >
-                                        {itms.map((itm)=>{
-                                            return(
-                                                <a className="dropdown-item" onClick={()=>setItem([itm.name,itm.name])}>{itm.name}</a>
-                                            )
-                                        })}
-                                        </div>
-                                    </div>
-                                    <div className="mb-2 w-50">
-                                        <label className="form-label">Quantity</label>
-                                        <input value={qty} onChange={onChange} className={`form-control rounded-3 border-0 border-bottom `} type="number" name="qty" />
-                                        {/* {errors.qty && <div className="invalid-feedback">{errors.qty.message}</div>} */}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="d-flex gap-2 mt-4 ">
-                                <button type="button" onClick={()=>handleAdd()} className="btn btn-secondary me-2 d-flex align-procurementDetails-center gap-2 fw-semibold">
-                                        <IconPlus size={22} />Add Item
-                                </button>
-                            </div>
-                        </div>
-                        <div className="d-flex flex-column table-responsive gap-4 w-100 justify-content-between me-5">
-                            <div >
-                                <table className="table text-center ">
-                                    <thead>
-                                        <tr>
-                                            <td>No</td>
-                                            <td>Item</td>
-                                            <td>Item Category</td>
-                                            <td>Quantity</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {itemList.map((procurementDetail,idx)=>{
-                                            return(
-                                                <tr key={idx}>
-                                                    <td>{++idx}</td>
-                                                    <td className="fw-semibold">{procurementDetail.item}</td>
-                                                    <td>{procurementDetail.itemCategory}</td>
-                                                    <td>{procurementDetail.qty}</td>
-                                                    <td>
-                                                        <button type="button" onClick={()=>handleRemove(procurementDetail.id)} className="btn btn-light text-white">
-                                                            <IconMinus size={22} color="red"/>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            )
-                                    })}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div className="d-flex gap-2 mt-4 justify-content-end">
-                                <button type="submit" className="btn btn-secondary me-2 px-5 d-flex align-procurements-center gap-2 fw-semibold">
-                                        <IconDeviceFloppy size={22} />Submit
-                                </button>
-                                {/* <button onClick={handleReset} type="button" className="btn btn-outline-primary me-2 d-flex align-procurements-center gap-2 fw-semibold border-2">
-                                    <i>
-                                    <IconRefresh size={22}/>
-                                    </i>
-                                    Reset
-                                </button> */}
-                            </div>
-                        </div>
-                </form>
 
-            </>
-        )
+        setItem(itemForm)
     }
+
+    const onAddItemProcurement = () => {
+        let items = getValues('procurementDetailRequests')
+
+        if(!item.itemId){
+            const max = Math.max(...items.map(val => val.items)) == '-Infinity' ? 0 : Math.max(...items.map(val => val.itemId))
+            item.itemId = max + 1
+        }
+        
+        if(items.find(val => val.itemId == item.itemId)){
+            items = items.map(val => {
+                if(val.itemId == item.itemId){
+                    val.quantity = item.quantity
+                }
+                return val
+            })
+        }else{
+            items.push(item)
+        }
+        setValue('procurementDetailRequests', items)
+
+        setItem({
+            itemId: '',
+            quantity: 0
+        })
+        trigger()
+    }
+
+    const onDeleteItem = (id) => {
+        const items = getValues('procurementDetailRequests').filter(item => item.itemId != id)
+        setValue('procurementDetailRequests', items)
+    }
+
+    const onAddApprovalData = (approval) => {
+        const approvalRequests = getValues("approvalRequests")
+
+        approvalRequests.push({
+            userId: approval.userId
+        })
+
+        setValue('approvalRequests', approvalRequests)
+
+        console.log(getValues('approvalRequests'))
+        console.log(getValues())
+        trigger()
+    }
+
+    
+    const onDelete = () => {
+        setValue('approvalRequests', [])
+        SetElementApprove([])
+        trigger()
+    }
+
+    const onResetAll = () => {
+        reset()
+        setIsSetProCat(false)
+        SetElementApprove([])
+        trigger()
+    }
+
+
+    const onAddApprovalElement = () => {
+        const length = elementApprove.length + 1
+        const elementUpdate =  
+            {
+                id: length,
+                component: <ProcurementApproval
+                 key={length} 
+                 id={length}
+                 divisions={divs}
+                 users={usrs}
+                 onAddApprovalData={onAddApprovalData}
+                 onDelete={onDelete}
+                 elementApprove={elementApprove}
+                />
+            }
+
+        SetElementApprove(prevEl => [...prevEl, elementUpdate])
+    }
+
+    return(
+        <form autoComplete="off" onSubmit={handleSubmit(onSubmit)} className="mb-3 shadow-sm p-4 rounded-2 bg-white w-100">
+            <div className="w-100 row mb-3">
+                <div className="col">
+                    <label htmlFor="procurementCategory" className="form-label">Procurement Category</label>
+                    <select disabled={isSetProCat} {...register("procurementCategoryId")} id="procurementCategory" className="form-select">
+                        <option value="">--Select Procurement Category--</option>
+                        {proCats.map((val, idx) => (
+                            <option key={idx} value={val.procurementCategoryId}>{val.name}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="col align-self-end text-end">
+                    <button
+                     type="button" 
+                     onClick={onSaveProcurementCategory} 
+                     disabled={isSetProCat || !watch('procurementCategoryId')} 
+                     className="btn btn-primary text-white fw-bold"
+                    >Save</button>
+                </div>
+            </div>
+            {isSetProCat && (
+                <>
+                    <hr />
+                    <div className="w-100 row">
+                        {proCats.find(val => val.procurementCategoryId == watch('procurementCategoryId')).name != "Funds Procurement"  && (
+                            <div className="col">
+                                <label htmlFor="itemId" className="form-label">Item</label>
+                                <select onChange={onChangeItem} value={item.itemId} name="itemId" id="itemId" className="form-select">
+                                    <option value="">--Select Item--</option>
+                                    {itms.map((val, idx) => (
+                                        <option key={idx} value={val.itemId}>{val.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
+                        <div className="col-3">
+                            <label htmlFor="quantity" className="form-label">{proCats.find(val => val.procurementCategoryId == watch('procurementCategoryId')).name == "Funds Procurement" ? "Money" : "Quantity"}</label>
+                            <input type="number" onChange={onChangeItem} value={item.quantity} name="quantity" id="quantity" className="form-control" />
+                        </div>
+                        <div className="col align-self-end text-end">
+                            <button
+                            type="button" 
+                            onClick={onAddItemProcurement} 
+                            disabled={proCats.find(val => val.procurementCategoryId == watch('procurementCategoryId')).name == "Funds Procurement" ? !(item.quantity == 0 ? false : true) : !(item.itemId && !item.quantity == 0)} 
+                            className="btn btn-primary text-white fw-bold"
+                            >Add Item</button>
+                        </div>
+                    </div>
+
+                    <div className="table-responsive mt-4 p-2 bg-light">
+                        <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col" className="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {watch("procurementDetailRequests") && getValues("procurementDetailRequests").length != 0 ?
+                                getValues("procurementDetailRequests").map((item, idx) => (
+                                    <tr key={idx}>
+                                        <th scope="row">{idx + 1}</th>
+                                        <td>{itms.find(val => val.itemId == item.itemId)?.name ?? "Money"}</td>
+                                        <td>{item.quantity}</td>
+                                        <td className="text-center">
+                                            <button type="button" onClick={() => onDeleteItem(item.itemId)} className="btn btn-danger text-white fw-bold">Delete</button>
+                                        </td>
+                                    </tr>
+                                )):
+                                <tr>
+                                    <td colSpan={4} className="text-center">Item not found</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="w-100 row mt-3">
+                        <div className="col">
+                            <div className="d-flex gap-2">
+                                <button type="button" onClick={onAddApprovalElement} className="btn btn-primary text-white fw-bold mb-4">Add Approval</button>
+                                <button type="button" onClick={onDelete} className="btn btn-danger text-white fw-bold mb-4">Reset Approval</button>
+                            </div>
+                            <div ref={approvalRef} className="row">
+                                {elementApprove.map(el => 
+                                    createPortal(el.component, approvalRef.current)
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    {console.log(isValid)}
+                    <div className="row w-100">
+                        <div className="col-12 text-end">
+                            <button
+                             type="submit" 
+                             className="btn btn-primary text-white fw-bold me-2"
+                             disabled={!isValid}
+                            >Submit</button>
+                            <button onClick={onResetAll} type="button" className="btn btn-danger text-white fw-bold">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )}
+        </form>
+    )
+}
