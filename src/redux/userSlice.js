@@ -9,6 +9,9 @@ export const getUserAction = createAsyncThunk('users/getUser',async ()=>{
     return await service.getAll();
 })
 
+export const getCurrentUserAction = createAsyncThunk('users/getCurrentUser',async (payload,thunkAPI)=>{
+    return await service.getCurrentUser(payload);
+})
 export const postRegisterAdminAction = createAsyncThunk('users/postRegisterAdmin',async (payload,thunkAPI)=>{
     const response = await service.createAdmin(payload)
     await thunkAPI.dispatch(getUserAction())
