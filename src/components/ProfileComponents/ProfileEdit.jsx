@@ -79,6 +79,7 @@ const ProfileEdit = () => {
       }
       console.log(registerInputs);
       await dispatch(putUserAction(registerInputs))
+      navigate(-1)
 
     } catch (error) {
       console.log(error);

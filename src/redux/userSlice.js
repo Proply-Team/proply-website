@@ -32,6 +32,11 @@ export const putUserAction = createAsyncThunk('users/putUser',async (payload,thu
     await thunkAPI.dispatch(getUserAction())
     return response;
 })
+export const postUserPhotoAction = createAsyncThunk('users/postUserPhoto',async (payload,thunkAPI)=>{
+    const response = await service.updatePhoto(payload)
+    await thunkAPI.dispatch(getUserAction())
+    return response;
+})
 export const deleteUserAction = createAsyncThunk('users/deleteUser',async (payload,thunkAPI)=>{
     const response = await service.remove(payload)
     await thunkAPI.dispatch(getUserAction())
@@ -91,8 +96,10 @@ const userSlice = createSlice ({
             state.current=payload;
             state.isLoading=false;
         }),
-        builder.addCase(getCurrentUserAction.rejected,(state)=>{
+        builder.addCase(getCurrentUserAction.rejected,(state,{payload})=>{
             state.isLoading=false;
+            state.message=payload;
+            console.log(payload);
         }),
         builder.addCase(postRegisterAdminAction.pending,(state)=>{
             state.isLoading= true;
@@ -132,6 +139,16 @@ const userSlice = createSlice ({
             state.isLoading=false;
         }),
         builder.addCase(putUserAction.rejected,(state)=>{
+            state.isLoading=false;
+        })
+        builder.addCase(postUserPhotoAction.pending,(state)=>{
+            state.isLoading= true;
+        }),
+        builder.addCase(postUserPhotoAction.fulfilled,(state,{payload})=>{
+            state.message=payload;
+            state.isLoading=false;
+        }),
+        builder.addCase(postUserPhotoAction.rejected,(state)=>{
             state.isLoading=false;
         })
         builder.addCase(deleteUserAction.pending,(state)=>{
