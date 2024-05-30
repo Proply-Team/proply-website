@@ -90,6 +90,7 @@ function UserService() {
 
   const getCurrentUser = async (payload) => {
     try {
+      console.log(payload)
       const response = await proplyInstance.post("/users/email", payload);
       if (response.data.statusCode === 200) {
         return response.data.data;

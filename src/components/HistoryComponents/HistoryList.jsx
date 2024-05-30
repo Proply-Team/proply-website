@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { IconEraser,IconPlus } from "@tabler/icons-react";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectedProcurement, remove,getProcurementAction } from "../../redux/procurementSlice";
+import { selectedProcurement, getProcurementAction } from "../../redux/procurementSlice";
 import moment from "moment";
 import { getCurrentUserAction } from "../../redux/userSlice";
 import Loading from "../../animation/Loading";
@@ -43,10 +42,6 @@ export default function HistoryList() {
         return moment(date).format('LL');
     }
 
-    const handleAdd = (procurement) =>{
-        dispatch(selectedProcurement(procurement));
-        navigate("form");
-    }
     const handleSelectedProcurement = (procurement) =>{
         dispatch(selectedProcurement(procurement));
         navigate("id");

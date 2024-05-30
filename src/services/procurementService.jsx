@@ -30,6 +30,8 @@ function ProcurementService() {
                 res = await proplyInstance.get("/procurements")
             }
 
+            console.log("SERVICE", res)
+
             return res.data
         }catch(e){
             throw new Error(e)
@@ -41,7 +43,7 @@ function ProcurementService() {
             const response = await proplyInstance.put("/procurements/approve", payload)
             if (response.data.statusCode === 200) {
                 toast.success("Approval submitted")
-                
+
                 return response.data;
               } else {
                 throw new Error(response.data.message || "Approvement failed");

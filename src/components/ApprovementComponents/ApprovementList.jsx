@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { IconEraser,IconPlus } from "@tabler/icons-react";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectedProcurement, remove,getProcurementAction } from "../../redux/procurementSlice";
+import { getProcurementAction } from "../../redux/procurementSlice";
 import moment from "moment";
 import { getCurrentUserAction } from "../../redux/userSlice";
 import Loading from "../../animation/Loading";
@@ -42,14 +41,9 @@ export default function ApprovementList() {
     const handleDate = (date) =>{
         return moment(date).format('LL');
     }
-
-    const handleAdd = (procurement) =>{
-        dispatch(selectedProcurement(procurement));
-        navigate("form");
-    }
+    
     const handleSelectedProcurement = (procurement) =>{
-        dispatch(selectedProcurement(procurement));
-        navigate("id");
+        navigate(`/procurements/${procurement.procurementId}`);
     }
 
     if(isLoading) {
@@ -58,11 +52,6 @@ export default function ApprovementList() {
 
         return(
             <div className="d-flex flex-column table-responsive gap-4">
-                {/* <div>
-                <button onClick={()=>handleAdd()} className="btn btn-secondary fw-semibold">
-                    <IconPlus size={22} className="me-2 pb-1" />
-                    Request New Procurement
-                </button></div> */}
                 <table className="table text-center ">
                     <thead>
                         <tr>
@@ -70,7 +59,6 @@ export default function ApprovementList() {
                             <th>Procurement Category</th>
                             <th>Requested At</th>
                             <th>Status</th>
-                            {/* <th>Action</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -94,13 +82,6 @@ export default function ApprovementList() {
                                             {statusApproval(procurement.approvalResponses)}
                                         </span>
                                     </td>
-                                    {/* <td>
-                                        <div className="d-flex gap-2 justify-content-center">
-                                            <button onClick={()=>dispatch(remove(procurement.procurementId))} className="btn btn-light text-white">
-                                                <IconEraser size={22} color="red"/>
-                                            </button>
-                                        </div>
-                                    </td> */}
                                 </tr>
                             )
                     })}

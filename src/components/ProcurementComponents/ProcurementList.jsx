@@ -1,10 +1,8 @@
 import { useEffect } from "react";
-import { IconEraser, IconPlus } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  selectedProcurement,
-  remove,
   getProcurementAction,
 } from "../../redux/procurementSlice";
 import moment from "moment";
@@ -24,7 +22,7 @@ export default function ProcurementList() {
     console.log(payload)
     if (payload?.userCredentialResponse.role == "ROLE_EMPLOYEE") {
       await dispatch(getProcurementAction(payload.userId));
-    } else {
+    } else if(["ROLE_ADMIN","ROLE_MANAGER"].includes(payload?.userCredentialResponse.role)){
       await dispatch(getProcurementAction());
     }
   };
@@ -50,8 +48,7 @@ export default function ProcurementList() {
     return moment(date).format("LL");
   };
 
-  const handleAdd = (procurement) => {
-    dispatch(selectedProcurement(procurement));
+  const handleAdd = () => {
     navigate("form");
   };
   const handleSelectedProcurement = (procurement) => {
@@ -80,7 +77,6 @@ export default function ProcurementList() {
             <th>Procurement Category</th>
             <th>Requested At</th>
             <th>Status</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -117,18 +113,6 @@ export default function ProcurementList() {
                     >
                       {statusApproval(procurement.approvalResponses)}
                     </span>
-                  </td>
-                  <td>
-                    <div className="d-flex gap-2 justify-content-center">
-                      <button
-                        onClick={() =>
-                          dispatch(remove(procurement.procurementId))
-                        }
-                        className="btn btn-light text-white"
-                      >
-                        <IconEraser size={22} color="red" />
-                      </button>
-                    </div>
                   </td>
                 </tr>
               );

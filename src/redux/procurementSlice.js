@@ -74,25 +74,25 @@ const procurementSlice = createSlice ({
     },
 
     reducers: {
-        add: (state, {payload}) => {
-            state.procs.push(payload);
-        },
-        remove : (state, {payload}) => {
-            if (!confirm("delete row?")) return;
-            state.procs = state.procs.filter(proc => proc.id !== payload);
-        },
-        selectedProcurement : (state, {payload}) => {
-            state.proc = payload;
-            console.log(state.proc);
-        },
-        update : (state, {payload}) => {
-            state.procs = state.procs.map(proc => {
-                if (proc.id === payload.id) {
-                    return {...payload}
-                }
-                return proc;
-            })
-        }
+        // add: (state, {payload}) => {
+        //     state.procs.push(payload);
+        // },
+        // remove : (state, {payload}) => {
+        //     if (!confirm("delete row?")) return;
+        //     state.procs = state.procs.filter(proc => proc.id !== payload);
+        // },
+        // selectedProcurement : (state, {payload}) => {
+        //     state.proc = payload;
+        //     console.log(state.proc);
+        // },
+        // update : (state, {payload}) => {
+        //     state.procs = state.procs.map(proc => {
+        //         if (proc.id === payload.id) {
+        //             return {...payload}
+        //         }
+        //         return proc;
+        //     })
+        // }
     },
 
     extraReducers: (builder) =>{

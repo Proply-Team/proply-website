@@ -12,8 +12,8 @@ function ProcurementApproval({
     
     const {
         register,
-        handleSubmit,
         watch,
+        getValues
     } = useForm({
         defaultValues: {
             userId: '',
@@ -21,14 +21,17 @@ function ProcurementApproval({
         }
     })
 
-    const onSubmit = (data) => {
+
+    const onSubmit = () => {
+        const data = getValues()
+        
         console.log(data)
         setIsSet(true)
         onAddApprovalData(data)
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className='mb-2'>
+        <form className='mb-2'>
             <div className="row">
                 <div className="col">
                     <label htmlFor={`division-${id}`} className="form-label">Division</label>
@@ -49,7 +52,7 @@ function ProcurementApproval({
                     </select>
                 </div>
                 <div className="col align-self-end">
-                    <button type='submit' disabled={isSet} className="btn btn-primary me-2">Save</button>
+                    <button type='button' onClick={() =>onSubmit()} disabled={isSet} className="btn btn-primary me-2">Save</button>
                 </div>
             </div>
         </form>

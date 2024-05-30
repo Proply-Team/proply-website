@@ -150,8 +150,8 @@ import HistoryDetail from "../components/HistoryComponents/HistoryDetail";
                             element: <ApprovementList />,
                         },
                         {
-                            path: "id",
-                            element: <Approval />,
+                            path: ":id",
+                            element: <ProcurementDetail />,
                         }
                     ]
                 },
