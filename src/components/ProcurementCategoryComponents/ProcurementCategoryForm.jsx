@@ -45,13 +45,11 @@ export default function ProcurementCategoryForm() {
             if (data.procurementCategoryId&&data.procurementCategoryId!="") {  
               const proCat = {...data};
               await dispatch(putProcurementCategoryAction(proCat));      
-              toast.success("Procurement category successfully updated");
             }else {
                 const proCat ={
                     ...data,
                 };
                 await dispatch(postProcurementCategoryAction(proCat));      
-                toast.success("Procurement category successfully added");
             }
             handleReset();
             navigate("/procurement-categories");            

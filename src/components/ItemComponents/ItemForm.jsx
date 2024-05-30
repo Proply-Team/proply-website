@@ -51,13 +51,11 @@ export default function ItemForm() {
                 if (data.itemId&&data.itemId!="") {  
                     const itm = {id:data.itemId, name:data.name,itemCategoryId:itemCategory[1]};
                     await dispatch(putItemAction(itm));      
-                    toast.success("Item successfully updated");
                   }else {
                       const itm ={
                           ...data,itemCategoryId:itemCategory[1]
                       };
                       await dispatch(postItemAction(itm));      
-                      toast.success("Item successfully added");
                   }
                   handleReset();
                   navigate("/items");                      

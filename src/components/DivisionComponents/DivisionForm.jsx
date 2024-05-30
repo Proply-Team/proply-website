@@ -45,14 +45,12 @@ export default function DivisionForm() {
         try {
             if (data.divisionId&&data.divisionId!="") {  
               await dispatch(putDivisionAction({divisionId:div.divisionId,name:data.name}));
-              toast.success("Division successfully updated");      
             }else {
                 const div ={
                     ...data,
                     isActive:true
                 };
                 await dispatch(postDivisionAction(div));
-                toast.success("Division successfully added");
           
             }            
         } catch (error) {
