@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { AuthAction } from "./redux/auth/authAction";
 import { useSelector } from "react-redux";
 import { selectAuth } from "./redux/auth/authSlice";
-import "./App.css";
+// import "./App.css";
 function App() {
   const dispatch = useDispatch();
   const { isLoading } = useSelector(selectAuth);

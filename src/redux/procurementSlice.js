@@ -31,6 +31,12 @@ export const putApprovalAction = createAsyncThunk('procurements/putApproval',asy
     return response;
 })
 
+export const putRejectAction = createAsyncThunk('procurements/putReject',async (payload,thunkAPI)=>{
+    const response = await service.reject(payload)
+    await thunkAPI.dispatch(getProcurementAction())
+    return response;
+})
+
 
 const procurementSlice = createSlice ({
     name:"procurement",
@@ -96,6 +102,16 @@ const procurementSlice = createSlice ({
             state.message = payload.message
         }),
         builder.addCase(putApprovalAction.rejected, (state) => {
+            state.isLoading = false
+        })
+        builder.addCase(putRejectAction.pending, (state) => {
+            state.isLoading = true
+        }),
+        builder.addCase(putRejectAction.fulfilled, (state, {payload}) => {
+            state.isLoading = false
+            state.message = payload.message
+        }),
+        builder.addCase(putRejectAction.rejected, (state) => {
             state.isLoading = false
         })
     }
