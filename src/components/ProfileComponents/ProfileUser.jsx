@@ -67,7 +67,7 @@ export default function ProfileUser() {
           style={{ width: 200, height: 200 }}
         />
         {editPhoto ? (
-          <div className="p-3">
+          <div className="p-3 justify-content-center">
             <div className="d-flex align-items-center justify-content-center">
               <input
                 type="file"
