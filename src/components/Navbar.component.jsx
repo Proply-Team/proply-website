@@ -13,8 +13,9 @@ const NavbarComponent = () => {
 
   const dispatch=useDispatch();
   const handleLogout = ()=>{
-    dispatch(logout())
-  }
+    if (!confirm("Log out?")) return;
+    dispatch(logout());
+  };
   return(
     <div className={"d-flex flex-column justify-content-between text-white rounded-end-5 py-4 ps-2 pe-1 h-100 bg-primary"} >
         <div className="font-logo text-center mb-5">
@@ -111,7 +112,7 @@ const NavbarComponent = () => {
                             <span>Procurements</span>
                         </li>
                     </Link>
-                    <Link to='/items'>
+                    <Link to='/history'>
                         <li className="cursor-pointer text-white">
                             <i className="me-3">
                                 <IconCategoryPlus />

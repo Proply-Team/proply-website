@@ -23,6 +23,7 @@ const HeaderComponent = () => {
   }, [dispatch]);
 
   const handleLogout = () => {
+    if (!confirm("Log out?")) return;
     dispatch(logout());
   };
 
@@ -116,7 +117,7 @@ const HeaderComponent = () => {
             </Link>
             <li>
               <button
-                onClick={() => handleLogout}
+                onClick={handleLogout}
                 className="dropdown-item"
                 href="#"
               >

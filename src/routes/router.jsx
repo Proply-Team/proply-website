@@ -30,6 +30,8 @@ import AuthrozationRoute from "../components/Guard/AuthrozationRoute";
 import Approvement from "../components/ApprovementComponents/Approvement";
 import ApprovementList from "../components/ApprovementComponents/ApprovementList";
 import Approval from "../components/ApprovementComponents/Approval";
+import HistoryList from "../components/HistoryComponents/HistoryList";
+import HistoryDetail from "../components/HistoryComponents/HistoryDetail";
 
 
   export const router = createBrowserRouter([
@@ -126,6 +128,16 @@ import Approval from "../components/ApprovementComponents/Approval";
                         {
                             path: ":id",
                             element: <ProcurementDetail />,
+                        }
+                    ]
+                },
+                {
+                    path: "history",
+                    element: <HistoryList />,
+                    children: [
+                        {
+                            path: "id",
+                            element: <HistoryDetail />,
                         }
                     ]
                 },
