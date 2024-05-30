@@ -4,11 +4,13 @@ import { useSelector,useDispatch } from "react-redux";
 import { putRejectAction, remove,getProcurementAction, putApprovalAction } from "../../redux/procurementSlice";
 import { Link } from "react-router-dom";
 import Loading from "../../animation/Loading"
+import { useNavigate } from "react-router-dom";
 
 
 export default function Approval({}) {
     const{user} = useSelector((state) => state.auth)
     const{proc,isLoading} = useSelector((state)=>state.procurement)
+    const navigate = useNavigate()
     const dispatch = useDispatch();
     console.log(proc);
     useEffect(()=>{
@@ -21,11 +23,13 @@ export default function Approval({}) {
     const handleApprove = async() =>{
         if(!confirm("Approve this procurement?"))return;
         await dispatch(putApprovalAction({procurementId:proc.procurementId}))
+        navigate(-1)
     }
 
     const handleReject = async() =>{
         if(!confirm("Reject this procurement?"))return;
         await dispatch(putRejectAction({procurementId:proc.procurementId}))
+        navigate(-1)
     }
 
 

@@ -58,6 +58,7 @@ export default function HistoryList() {
 
         return(
             <div className="d-flex flex-column table-responsive gap-4">
+            <h2>History</h2>
                 {/* <div>
                 <button onClick={()=>handleAdd()} className="btn btn-secondary fw-semibold">
                     <IconPlus size={22} className="me-2 pb-1" />

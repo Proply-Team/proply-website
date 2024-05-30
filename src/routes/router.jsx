@@ -59,7 +59,7 @@ import HistoryDetail from "../components/HistoryComponents/HistoryDetail";
                 },
                 {
                     path: "divisions",
-                    element: <AuthrozationRoute component={Divisions} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    element: <AuthrozationRoute component={Divisions} roles={['ROLE_ADMIN']} />,
                     children: [
                         {
                             index:true,
@@ -73,7 +73,7 @@ import HistoryDetail from "../components/HistoryComponents/HistoryDetail";
                 },
                 {
                     path: "item-categories",
-                    element: <AuthrozationRoute component={Categories} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    element: <AuthrozationRoute component={Categories} roles={['ROLE_ADMIN']} />,
                     children: [
                         {
                             index:true,
@@ -87,7 +87,7 @@ import HistoryDetail from "../components/HistoryComponents/HistoryDetail";
                 },
                 {
                     path: "procurement-categories",
-                    element: <AuthrozationRoute component={ProcurementCategories} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    element: <AuthrozationRoute component={ProcurementCategories} roles={['ROLE_ADMIN']} />,
                     children: [
                         {
                             index:true,
@@ -101,7 +101,7 @@ import HistoryDetail from "../components/HistoryComponents/HistoryDetail";
                 },
                 {
                     path: "items",
-                    element: <AuthrozationRoute component={Items} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    element: <AuthrozationRoute component={Items} roles={['ROLE_ADMIN']} />,
                     children: [
                         {
                             index:true,
@@ -143,7 +143,7 @@ import HistoryDetail from "../components/HistoryComponents/HistoryDetail";
                 },
                 {
                     path: "approvements",
-                    element: <Approvement />,
+                    element:<AuthrozationRoute component={Approvement} roles={['ROLE_MANAGER']} />,
                     children: [
                         {
                             index:true,
