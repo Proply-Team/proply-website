@@ -16,7 +16,6 @@ export default function ProcurementDetail() {
   const { id } = useParams();
 
   useEffect(() => {
-    console.log("first");
     dispatch(getProcurementByIdAction(id));
     dispatch(getProcurementAction());
   }, [id]);
@@ -106,7 +105,7 @@ export default function ProcurementDetail() {
                 proc.approvalResponses.map((approv, idx) => {
                   return (
                     <tr key={idx}>
-                      <td>{++idx}</td>
+                      <td>{idx + 1}</td>
                       <td className="fw-semibold">
                         {approv.userResponse.fullName}
                       </td>
@@ -116,30 +115,37 @@ export default function ProcurementDetail() {
                           {approv.userResponse.userCredentialResponse.email ==
                           user.email ? (
                             <>
-                                {proc.approvalResponses[idx - 1] || proc.approvalResponses[idx - 1]?.status != "PENDING" ? (
-                                    <>
-                                        <button
-                                            type="button"
-                                            className="btn btn-danger fw-bold d-flex align-items-center"
-                                        >
-                                            <IconX size={22} color="white" />
-                                            <span className="text-white">Reject</span>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="btn btn-success fw-bold d-flex align-items-center"
-                                        >
-                                            <IconCheck size={22} color="white" />
-                                            <span className="text-white">Approve</span>
-                                        </button>
-                                    </>
-                                ): (
-                                    <>
+                              {proc.approvalResponses[idx - 1] &&
+                              ["PENDING", "REJECTED", "CANCEL"].includes(
+                                proc.approvalResponses[idx].status
+                              ) ? (
+                                <>
+                                    {["PENDING"].includes(
+                                        proc.approvalResponses[idx].status
+                                    ) && (
                                         <button className="btn btn-secondary">
                                             Waiting
                                         </button>
-                                    </>
-                                )}
+                                    )}
+                                </>
+                              ) : (
+                                <>
+                                  <button
+                                    type="button"
+                                    className="btn btn-danger fw-bold d-flex align-items-center"
+                                  >
+                                    <IconX size={22} color="white" />
+                                    <span className="text-white">Reject</span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="btn btn-success fw-bold d-flex align-items-center"
+                                  >
+                                    <IconCheck size={22} color="white" />
+                                    <span className="text-white">Approve</span>
+                                  </button>
+                                </>
+                              )}
                             </>
                           ) : (
                             <span></span>

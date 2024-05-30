@@ -18,8 +18,9 @@ export default function ProcurementList() {
   const dispatch = useDispatch();
 
   const fetchData = async () => {
-    const { payload } = await dispatch(getCurrentUserAction(user.email));
-    if (payload?.userCredentialResponse.role != "ROLE_ADMIN") {
+    const { payload } = await dispatch(getCurrentUserAction({email: user.email}));
+    console.log(payload)
+    if (payload?.userCredentialResponse.role == "ROLE_EMPLOYEE") {
       await dispatch(getProcurementAction(payload.userId));
     } else {
       await dispatch(getProcurementAction());
