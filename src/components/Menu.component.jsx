@@ -46,7 +46,9 @@ const MenuComponent = () => {
           <img src={company} alt="company-image" style={{width:50}} />
           <h6 className="text-center">Register User</h6>
         </div>
-    </Link>
+    </Link>    
+  {(user.role == "ROLE_ADMIN") && (
+    <>
     <Link to='item-categories'>
         <div className="element list-item bg-white d-flex flex-row gap-3 py-2 px-4 shadow-sm rounded-5 align-items-center justify-content-center ">
           <img src={company} alt="company-image" style={{width:50}} />
@@ -71,6 +73,7 @@ const MenuComponent = () => {
           <h6 className="text-center">Division</h6>
         </div>
     </Link>
+    </>)}
  </div>}
  {isShowing[1]&& 
  <div className="d-flex flex-wrap gap-4 justify-content-around">

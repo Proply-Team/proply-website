@@ -9,6 +9,8 @@ import {
 } from "../../redux/procurementSlice";
 import moment from "moment";
 import { getCurrentUserAction } from "../../redux/userSlice";
+import Loading from "../../animation/Loading";
+
 
 export default function ProcurementList() {
   const { procs, isLoading } = useSelector((state) => state.procurement);
@@ -31,9 +33,6 @@ export default function ProcurementList() {
     fetchData();
   }, []);
 
-  if (isLoading) {
-    return null;
-  }
 
   const statusApproval = (data) => {
     let status = data.map((val) => val.status);
@@ -58,6 +57,9 @@ export default function ProcurementList() {
   const handleSelectedProcurement = (procurement) => {
     navigate(procurement.procurementId);
   };
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="d-flex flex-column table-responsive gap-4">
         { user.role == "ROLE_EMPLOYEE" && (

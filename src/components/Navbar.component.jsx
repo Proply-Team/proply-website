@@ -57,6 +57,8 @@ const NavbarComponent = () => {
                                     <span>User</span>
                                 </li>
                             </Link>
+              {(user.role == "ROLE_ADMIN") && (
+                <>
                     <Link to='/item-categories'>
                         <li className="cursor-pointer text-white">
                             <i className="me-3">
@@ -89,6 +91,7 @@ const NavbarComponent = () => {
                             <span>Procurement Category</span>
                         </li>
                     </Link>
+                    </>)}
                     </ul>
                 </div>
                 </>
