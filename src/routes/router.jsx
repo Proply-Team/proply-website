@@ -124,7 +124,7 @@ import Approval from "../components/ApprovementComponents/Approval";
                             element: <ProcurementForm />,
                         },
                         {
-                            path: "id",
+                            path: ":id",
                             element: <ProcurementDetail />,
                         }
                     ]

@@ -1,8 +1,6 @@
 import { proplyInstance } from "../api/proplyInstance";
 
 function ProcurementService() {
-    let procs = [];
-
     const create = async (proc) =>{
         try{
             console.log(proc)
@@ -10,6 +8,15 @@ function ProcurementService() {
             return res.data
         }catch(e){
             throw new Error(e.message)
+        }
+    }
+
+    const getById = async (payload) => {
+        try{
+            const res = await proplyInstance.get(`/procurements/${payload}`)
+            return res.data
+        }catch(e){
+            throw new Error(e)
         }
     }
 
@@ -37,16 +44,6 @@ function ProcurementService() {
         }
     }
 
-    const reject = async (payload) =>{
-        try {
-            const response = await proplyInstance.put("/procurements/reject", payload)
-            return response.data
-        } catch (error) {
-            throw new Error(error.response?.data?.message || 'Update failed');
-        }
-    }
-
-
-    return{getAll,create,approve,reject}
+    return{getAll,create, approve, getById}
 }
 export default ProcurementService;

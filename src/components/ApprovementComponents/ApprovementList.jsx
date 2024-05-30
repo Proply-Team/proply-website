@@ -15,7 +15,7 @@ export default function ApprovementList() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    console.log(user);
+    console.log(procs);
     const fetchData = async () => {
         const {payload} = await dispatch(getCurrentUserAction({email:user.email}))
         console.log(payload);
@@ -70,7 +70,7 @@ export default function ApprovementList() {
                             <th>Procurement Category</th>
                             <th>Requested At</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            {/* <th>Action</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -79,7 +79,7 @@ export default function ApprovementList() {
                             <td colSpan={5} className="text-center">Procurement not found</td>
                         </tr>
                          : 
-                        (procs.filter(procurement=>statusApproval(procurement.approvalResponses)=="PENDING")).map((procurement,idx)=>{
+                        (procs.filter(procurement=>statusApproval(procurement.approvalResponses)=="PENDING"&&procurement.approvalResponses.some(res=>res.userResponse.fullName==user.fullName))).map((procurement,idx)=>{
                             return(
                                 <tr key={idx} onClick={()=>handleSelectedProcurement(procurement)} >
                                     <td>{++idx}</td>
@@ -94,13 +94,13 @@ export default function ApprovementList() {
                                             {statusApproval(procurement.approvalResponses)}
                                         </span>
                                     </td>
-                                    <td>
+                                    {/* <td>
                                         <div className="d-flex gap-2 justify-content-center">
                                             <button onClick={()=>dispatch(remove(procurement.procurementId))} className="btn btn-light text-white">
                                                 <IconEraser size={22} color="red"/>
                                             </button>
                                         </div>
-                                    </td>
+                                    </td> */}
                                 </tr>
                             )
                     })}

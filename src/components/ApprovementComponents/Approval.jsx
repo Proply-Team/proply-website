@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { IconWriting,IconEraser,IconX } from "@tabler/icons-react";
 import { useSelector,useDispatch } from "react-redux";
-import { selectedProcurement, remove,getProcurementAction } from "../../redux/procurementSlice";
+import { putRejectAction, remove,getProcurementAction, putApprovalAction } from "../../redux/procurementSlice";
 import { Link } from "react-router-dom";
 import Loading from "../../animation/Loading"
 
@@ -20,7 +20,12 @@ export default function Approval({}) {
 
     const handleApprove = async() =>{
         if(!confirm("Approve this procurement?"))return;
-        await dispatch()
+        await dispatch(putApprovalAction({procurementId:proc.procurementId}))
+    }
+
+    const handleReject = async() =>{
+        if(!confirm("Reject this procurement?"))return;
+        await dispatch(putRejectAction({procurementId:proc.procurementId}))
     }
 
 
@@ -91,14 +96,14 @@ export default function Approval({}) {
                                                     <td className="fw-semibold">{approvalDetail.userResponse.fullName}</td>
                                                     <td>{
                                                         approvalDetail.userResponse.fullName==user.fullName?
-                                                        <>
+                                                        <div className="d-flex gap-2" >
                                                         <button type="button" onClick={handleApprove} className="btn btn-success text-white">
                                                             APPROVE
                                                         </button>
                                                         <button type="button" onClick={handleReject} className="btn btn-danger text-white">
                                                             REJECT
                                                         </button>
-                                                        </>
+                                                        </div>
                                                         :
                                                         <span className={`badge ${
                                                             approvalDetail.status == "REJECTED" ? "bg-danger" :
