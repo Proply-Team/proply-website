@@ -13,6 +13,15 @@ function ProcurementService() {
         }
     }
 
+    const getById = async (payload) => {
+        try{
+            const res = await proplyInstance.get(`/procurements/${payload}`)
+            return res.data
+        }catch(e){
+            throw new Error(e)
+        }
+    }
+
     const getAll = async (payload) =>{
         try{
             let res;
@@ -46,6 +55,6 @@ function ProcurementService() {
         })
     }
 
-    return{getAll,create,update}
+    return{getAll,create,update, getById}
 }
 export default ProcurementService;

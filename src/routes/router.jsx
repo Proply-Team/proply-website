@@ -121,7 +121,7 @@ import AuthrozationRoute from "../components/Guard/AuthrozationRoute";
                             element: <ProcurementForm />,
                         },
                         {
-                            path: "id",
+                            path: ":id",
                             element: <ProcurementDetail />,
                         }
                     ]

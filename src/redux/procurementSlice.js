@@ -12,6 +12,14 @@ export const getProcurementAction = createAsyncThunk('procurements/getProcuremen
     }
 })
 
+export const getProcurementByIdAction = createAsyncThunk('procurements/getProcurementById', async (payload, thunkAPI) => {
+    try{
+        return await service.getById(payload)
+    }catch(e){
+        return thunkAPI.rejectWithValue(e.message)
+    }
+})
+
 export const postProcurementAction = createAsyncThunk('procurements/postProcurement',async (payload,thunkAPI)=>{
     const response = await service.create(payload)
     console.log(response)
@@ -69,6 +77,18 @@ const procurementSlice = createSlice ({
         builder.addCase(getProcurementAction.rejected, (state, {payload}) => {
             state.isLoading = false
             console.log(payload)
+            state.message = payload.message
+        })
+
+        builder.addCase(getProcurementByIdAction.pending, (state) => {
+            state.isLoading = true
+        })
+        builder.addCase(getProcurementByIdAction.fulfilled, (state, {payload}) => {
+            state.isLoading = false
+            state.proc = payload.data
+        })
+        builder.addCase(getProcurementByIdAction.rejected, (state, {payload}) => {
+            state.isLoading = false
             state.message = payload.message
         })
 
