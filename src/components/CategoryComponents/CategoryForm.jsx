@@ -44,15 +44,12 @@ export default function CategoryForm() {
         try {
             if (data.itemCategoryId&&data.itemCategoryId!="") {  
               await dispatch(putCategoryAction({itemCategoryId:cat.itemCategoryId,name:data.name}));
-              toast.success("Item category successfully updated");      
             }else {
                 const cat ={
                     ...data,
                     isActive:true
                 };
-                await dispatch(postCategoryAction(cat));
-                toast.success("Item category successfully added");
-          
+                await dispatch(postCategoryAction(cat));          
             }            
         } catch (error) {
             console.log(error);

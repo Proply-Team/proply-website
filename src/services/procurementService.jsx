@@ -1,8 +1,7 @@
 import { proplyInstance } from "../api/proplyInstance";
+import { toast } from "react-toastify";
 
 function ProcurementService() {
-    let procs = [];
-
     const create = async (proc) =>{
         try{
             console.log(proc)
@@ -10,6 +9,15 @@ function ProcurementService() {
             return res.data
         }catch(e){
             throw new Error(e.message)
+        }
+    }
+
+    const getById = async (payload) => {
+        try{
+            const res = await proplyInstance.get(`/procurements/${payload}`)
+            return res.data
+        }catch(e){
+            throw new Error(e)
         }
     }
 
@@ -22,6 +30,8 @@ function ProcurementService() {
                 res = await proplyInstance.get("/procurements")
             }
 
+            console.log("SERVICE", res)
+
             return res.data
         }catch(e){
             throw new Error(e)
@@ -31,22 +41,41 @@ function ProcurementService() {
     const approve = async (payload) =>{
         try {
             const response = await proplyInstance.put("/procurements/approve", payload)
-            return response.data
-        } catch (error) {
-            throw new Error(error.response?.data?.message || 'Update failed');
+            if (response.data.statusCode === 200) {
+                toast.success("Approval submitted")
+
+                return response.data;
+              } else {
+                throw new Error(response.data.message || "Approvement failed");
+              }
+            } catch (error) {
+              throw new Error(error.response?.data?.message || "Approvement failed");
+            }
         }
-    }
 
     const reject = async (payload) =>{
         try {
             const response = await proplyInstance.put("/procurements/reject", payload)
+            if (response.data.statusCode === 200) {
+                toast.success("Rejection submitted")
+                return response.data;
+              } else {
+                throw new Error(response.data.message || "Reject failed");
+              }
+            } catch (error) {
+              throw new Error(error.response?.data?.message || "Reject failed");
+            }
+    }
+
+    const cancel = async (payload) => {
+        try{
+            const response = await proplyInstance.put("/procurements/cancel", payload)
             return response.data
-        } catch (error) {
-            throw new Error(error.response?.data?.message || 'Update failed');
+        }catch(error){
+            throw new Error(error.response?.data?.message || "Cancel failed")
         }
     }
 
-
-    return{getAll,create,approve,reject}
+    return{getAll,create, approve, cancel, getById, reject}
 }
 export default ProcurementService;

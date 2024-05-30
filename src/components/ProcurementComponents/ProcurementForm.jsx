@@ -74,7 +74,7 @@ export default function ProcurementForm() {
         await dispatch(getCategoryAction())
         await dispatch(getDivisionAction())
         await dispatch(getUserAction())
-        await dispatch(getCurrentUserAction(user.email))
+        await dispatch(getCurrentUserAction({email: user.email}))
     }
 
     useEffect(()=>{
@@ -161,8 +161,6 @@ export default function ProcurementForm() {
 
         setValue('approvalRequests', approvalRequests)
 
-        console.log(getValues('approvalRequests'))
-        console.log(getValues())
         trigger()
     }
 

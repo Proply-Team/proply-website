@@ -30,6 +30,8 @@ import AuthrozationRoute from "../components/Guard/AuthrozationRoute";
 import Approvement from "../components/ApprovementComponents/Approvement";
 import ApprovementList from "../components/ApprovementComponents/ApprovementList";
 import Approval from "../components/ApprovementComponents/Approval";
+import HistoryList from "../components/HistoryComponents/HistoryList";
+import HistoryDetail from "../components/HistoryComponents/HistoryDetail";
 
 
   export const router = createBrowserRouter([
@@ -57,7 +59,7 @@ import Approval from "../components/ApprovementComponents/Approval";
                 },
                 {
                     path: "divisions",
-                    element: <AuthrozationRoute component={Divisions} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    element: <AuthrozationRoute component={Divisions} roles={['ROLE_ADMIN']} />,
                     children: [
                         {
                             index:true,
@@ -71,7 +73,7 @@ import Approval from "../components/ApprovementComponents/Approval";
                 },
                 {
                     path: "item-categories",
-                    element: <AuthrozationRoute component={Categories} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    element: <AuthrozationRoute component={Categories} roles={['ROLE_ADMIN']} />,
                     children: [
                         {
                             index:true,
@@ -85,7 +87,7 @@ import Approval from "../components/ApprovementComponents/Approval";
                 },
                 {
                     path: "procurement-categories",
-                    element: <AuthrozationRoute component={ProcurementCategories} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    element: <AuthrozationRoute component={ProcurementCategories} roles={['ROLE_ADMIN']} />,
                     children: [
                         {
                             index:true,
@@ -99,7 +101,7 @@ import Approval from "../components/ApprovementComponents/Approval";
                 },
                 {
                     path: "items",
-                    element: <AuthrozationRoute component={Items} roles={['ROLE_ADMIN', 'ROLE_MANAGER']} />,
+                    element: <AuthrozationRoute component={Items} roles={['ROLE_ADMIN']} />,
                     children: [
                         {
                             index:true,
@@ -124,22 +126,32 @@ import Approval from "../components/ApprovementComponents/Approval";
                             element: <ProcurementForm />,
                         },
                         {
-                            path: "id",
+                            path: ":id",
                             element: <ProcurementDetail />,
                         }
                     ]
                 },
                 {
+                    path: "history",
+                    element: <HistoryList />,
+                    children: [
+                        {
+                            path: "id",
+                            element: <HistoryDetail />,
+                        }
+                    ]
+                },
+                {
                     path: "approvements",
-                    element: <Approvement />,
+                    element:<AuthrozationRoute component={Approvement} roles={['ROLE_MANAGER']} />,
                     children: [
                         {
                             index:true,
                             element: <ApprovementList />,
                         },
                         {
-                            path: "id",
-                            element: <Approval />,
+                            path: ":id",
+                            element: <ProcurementDetail />,
                         }
                     ]
                 },

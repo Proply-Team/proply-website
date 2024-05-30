@@ -4,13 +4,11 @@ import { useSelector,useDispatch } from "react-redux";
 import { putRejectAction, remove,getProcurementAction, putApprovalAction } from "../../redux/procurementSlice";
 import { Link } from "react-router-dom";
 import Loading from "../../animation/Loading"
-import { useNavigate } from "react-router-dom";
 
 
-export default function Approval({}) {
+export default function HistoryDetail({}) {
     const{user} = useSelector((state) => state.auth)
     const{proc,isLoading} = useSelector((state)=>state.procurement)
-    const navigate = useNavigate()
     const dispatch = useDispatch();
     console.log(proc);
     useEffect(()=>{
@@ -23,13 +21,11 @@ export default function Approval({}) {
     const handleApprove = async() =>{
         if(!confirm("Approve this procurement?"))return;
         await dispatch(putApprovalAction({procurementId:proc.procurementId}))
-        navigate(-1)
     }
 
     const handleReject = async() =>{
         if(!confirm("Reject this procurement?"))return;
         await dispatch(putRejectAction({procurementId:proc.procurementId}))
-        navigate(-1)
     }
 
 
@@ -98,24 +94,14 @@ export default function Approval({}) {
                                                 <tr key={idx}>
                                                     <td>{++idx}</td>
                                                     <td className="fw-semibold">{approvalDetail.userResponse.fullName}</td>
-                                                    <td>{
-                                                        approvalDetail.userResponse.fullName==user.fullName?
-                                                        <div className="d-flex gap-2" >
-                                                        <button type="button" onClick={handleApprove} className="btn btn-success text-white">
-                                                            APPROVE
-                                                        </button>
-                                                        <button type="button" onClick={handleReject} className="btn btn-danger text-white">
-                                                            REJECT
-                                                        </button>
-                                                        </div>
-                                                        :
+                                                    <td>
                                                         <span className={`badge ${
                                                             approvalDetail.status == "REJECTED" ? "bg-danger" :
                                                             approvalDetail.status == "PENDING" ? "bg-primary" :
                                                             approvalDetail.status == "APPROVED" ? "bg-success" : "bg-secondary"
                                                         } text-white`}>
                                                             {approvalDetail.status}
-                                                        </span>}
+                                                        </span>
                                                     </td>
                                                     {/* <td>
                                                         <button type="button" onClick={()=>handleRemove(procurementDetail.id)} className="btn btn-light text-white">

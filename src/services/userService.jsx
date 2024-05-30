@@ -10,6 +10,7 @@ function UserService() {
         payload
       );
       if (response.data.statusCode === 201) {
+        toast.success("New employee Registered")
         return response.data;
       } else {
         throw new Error(response.data.message || "Create admin failed");
@@ -27,6 +28,7 @@ function UserService() {
         payload
       );
       if (response.data.statusCode === 201) {
+        toast.success("New Manager Registered")
         return response.data;
       } else {
         throw new Error(response.data.message || "Create manager failed");
@@ -44,6 +46,7 @@ function UserService() {
         payload
       );
       if (response.data.statusCode === 201) {
+        toast.success("New Employee Registered")
         return response.data;
       } else {
         throw new Error(response.data.message || "Create employee failed");
@@ -60,6 +63,7 @@ function UserService() {
       const response = await proplyInstance.post("/user-profiles", payload);
       console.log(response);
       if (response.data.statusCode === 200) {
+        toast.success("Photo successfully updated")
         return response.data;
       } else {
         throw new Error(response.data.message || "Upload Photo failed");
@@ -86,6 +90,7 @@ function UserService() {
 
   const getCurrentUser = async (payload) => {
     try {
+      console.log(payload)
       const response = await proplyInstance.post("/users/email", payload);
       if (response.data.statusCode === 200) {
         return response.data.data;
@@ -115,7 +120,8 @@ function UserService() {
     try {
       const response = await proplyInstance.put("/users", data);
       console.log(response);
-      if (response.statusCode === 200) {
+      if (response.data.statusCode === 200) {
+        toast.success("Profile successfully updated")
         return response.data;
       } else {
         throw new Error(response.message || "Update user failed");
@@ -132,6 +138,7 @@ function UserService() {
       );
       console.log(response);
       if (response.data.statusCode === 200) {
+        toast.success("User deleted")
         return response.data;
       } else {
         throw new Error(response.data.message || "Delete user failed");
