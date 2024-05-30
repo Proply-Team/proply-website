@@ -120,7 +120,7 @@ const NavbarComponent = () => {
                         </li>
                     </Link>
                     {(user.role == "ROLE_ADMIN"||user.role == "ROLE_MANAGER") && (
-                    <Link to='/divisions'>
+                    <Link to='/approvements'>
                         <li className="cursor-pointer text-white">
                             <i className="me-3">
                                 <IconUsersGroup />
