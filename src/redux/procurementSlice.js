@@ -34,15 +34,33 @@ export const putProcurementAction = createAsyncThunk('procurements/putProcuremen
 })
 
 export const putApprovalAction = createAsyncThunk('procurements/putApproval',async (payload,thunkAPI)=>{
-    const response = await service.approve(payload)
-    await thunkAPI.dispatch(getProcurementAction())
-    return response;
+    try{
+        const response = await service.approve(payload)
+        await thunkAPI.dispatch(getProcurementByIdAction(payload.procurementId))
+        return response;
+    }catch(e){
+        return thunkAPI.rejectWithValue(e.message)
+    }
 })
 
 export const putRejectAction = createAsyncThunk('procurements/putReject',async (payload,thunkAPI)=>{
-    const response = await service.reject(payload)
-    await thunkAPI.dispatch(getProcurementAction())
-    return response;
+    try{
+        const response = await service.reject(payload)
+        await thunkAPI.dispatch(getProcurementByIdAction(payload.procurementId))
+        return response;
+    }catch(e){
+        return thunkAPI.rejectWithValue(e.message)
+    }
+})
+
+export const putCancelAction = createAsyncThunk("procurements/putCancel", async (payload, thunkAPI) => {
+    try{
+        const response = await service.cancel(payload)
+        await thunkAPI.dispatch(getProcurementByIdAction(payload.procurementId))
+        return response
+    }catch(e){
+        return thunkAPI.rejectWithValue(e.message)
+    }
 })
 
 
@@ -132,6 +150,16 @@ const procurementSlice = createSlice ({
             state.message = payload.message
         }),
         builder.addCase(putRejectAction.rejected, (state) => {
+            state.isLoading = false
+        })
+        builder.addCase(putCancelAction.pending, (state) => {
+            state.isLoading = true
+        }),
+        builder.addCase(putCancelAction.fulfilled, (state, {payload}) => {
+            state.isLoading = false
+            state.message = payload.message
+        }),
+        builder.addCase(putCancelAction.rejected, (state) => {
             state.isLoading = false
         })
     }

@@ -44,6 +44,24 @@ function ProcurementService() {
         }
     }
 
-    return{getAll,create, approve, getById}
+    const reject = async (payload) => {
+        try{
+            const response = await proplyInstance.put("/procurements/reject", payload)
+            return response.data
+        }catch(error) {
+            throw new Error(error.response?.data?.message || "Reject failed")
+        }
+    }
+
+    const cancel = async (payload) => {
+        try{
+            const response = await proplyInstance.put("/procurements/cancel", payload)
+            return response.data
+        }catch(error){
+            throw new Error(error.response?.data?.message || "Cancel failed")
+        }
+    }
+
+    return{getAll,create, approve, cancel, getById, reject}
 }
 export default ProcurementService;
