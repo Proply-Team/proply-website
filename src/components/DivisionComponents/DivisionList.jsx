@@ -3,6 +3,7 @@ import { IconWriting,IconEraser,IconPlus } from "@tabler/icons-react";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectedDivision, deleteDivisionAction,getDivisionAction } from "../../redux/divisionSlice";
+import Loading from "../../animation/Loading";
 
 export default function DivisionList() {
     const{divs,div,isLoading} = useSelector((state)=>state.division)
@@ -14,9 +15,9 @@ export default function DivisionList() {
         dispatch(getDivisionAction());
     },[dispatch]);
 
-    // if(isLoading) {
-    //     return <Loading/>;
-    // }
+    if(isLoading) {
+        return <Loading/>;
+    }
 
     const handleSelectedDivision = (division) =>{
         dispatch(selectedDivision(division));

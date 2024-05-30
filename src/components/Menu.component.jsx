@@ -87,7 +87,7 @@ const MenuComponent = () => {
         </div>
     </Link>
     {(user.role=='ROLE_ADMIN'||user.role=='ROLE_MANAGER')&&(
-      <Link to='approvement'>
+      <Link to='approvements'>
           <div className="element list-item bg-white d-flex flex-row gap-3 py-2 px-4 shadow-sm rounded-5 align-items-center justify-content-center ">
             <img src={document} alt="document-image" style={{width:50}} />
             <h6 className="text-center">Approvement</h6>

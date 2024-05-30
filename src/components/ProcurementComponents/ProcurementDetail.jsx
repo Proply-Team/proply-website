@@ -3,6 +3,7 @@ import { IconWriting,IconEraser,IconX } from "@tabler/icons-react";
 import { useSelector,useDispatch } from "react-redux";
 import { selectedProcurement, remove,getProcurementAction } from "../../redux/procurementSlice";
 import { Link } from "react-router-dom";
+import Loading from "../../animation/Loading"
 
 export default function ProcurementDetail({}) {
     const{proc,isLoading} = useSelector((state)=>state.procurement)
@@ -15,9 +16,9 @@ export default function ProcurementDetail({}) {
     const formatDate = new Date(proc.requestedAt);
     const date = formatDate.toLocaleDateString(); 
 
-    // if(isLoading) {
-    //     return <Loading/>;
-    // }
+    if(isLoading) {
+        return <Loading/>;
+    }
 
         return(
             <div className="d-flex flex-column gap-4 m-4">

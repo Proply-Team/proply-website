@@ -5,18 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { selectedProcurement, remove,getProcurementAction } from "../../redux/procurementSlice";
 import moment from "moment";
 import { getCurrentUserAction } from "../../redux/userSlice";
+import Loading from "../../animation/Loading";
 
-export default function ProcurementList() {
+export default function ApprovementList() {
     const{procs,isLoading} = useSelector((state)=>state.procurement)
     const {
         user
     } = useSelector((state) => state.auth)
     const navigate = useNavigate();
-
     const dispatch = useDispatch();
 
+    console.log(user);
     const fetchData = async () => {
-        const {payload} = await dispatch(getCurrentUserAction(user.email))
+        const {payload} = await dispatch(getCurrentUserAction({email:user.email}))
+        console.log(payload);
         if(payload?.userCredentialResponse.role != "ROLE_ADMIN"){
             await dispatch(getProcurementAction(payload.userId));
         }else{
@@ -27,7 +29,6 @@ export default function ProcurementList() {
     useEffect(()=>{
         fetchData()
     },[]);
-
 
     const statusApproval = (data) => {
         let status = data.map(val => val.status)
@@ -55,14 +56,13 @@ export default function ProcurementList() {
         return <Loading/>;
     }
 
-
         return(
             <div className="d-flex flex-column table-responsive gap-4">
-                <div>
+                {/* <div>
                 <button onClick={()=>handleAdd()} className="btn btn-secondary fw-semibold">
                     <IconPlus size={22} className="me-2 pb-1" />
                     Request New Procurement
-                </button></div>
+                </button></div> */}
                 <table className="table text-center ">
                     <thead>
                         <tr>
@@ -79,7 +79,7 @@ export default function ProcurementList() {
                             <td colSpan={5} className="text-center">Procurement not found</td>
                         </tr>
                          : 
-                        procs.map((procurement,idx)=>{
+                        (procs.filter(procurement=>statusApproval(procurement.approvalResponses)=="PENDING")).map((procurement,idx)=>{
                             return(
                                 <tr key={idx} onClick={()=>handleSelectedProcurement(procurement)} >
                                     <td>{++idx}</td>
