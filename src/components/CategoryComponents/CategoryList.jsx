@@ -3,6 +3,7 @@ import { IconWriting,IconEraser,IconPlus } from "@tabler/icons-react";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectedCategory, deleteCategoryAction,getCategoryAction } from "../../redux/categorySlice";
+import Loading from "../../animation/Loading";
 
 export default function CategoryList() {
     const{cats,cat,isLoading} = useSelector((state)=>state.category)
@@ -14,9 +15,9 @@ export default function CategoryList() {
         dispatch(getCategoryAction());
     },[dispatch]);
 
-    // if(isLoading) {
-    //     return <Loading/>;
-    // }
+    if(isLoading) {
+        return <Loading/>;
+    }
 
     const handleSelectedCategory = (category) =>{
         dispatch(selectedCategory(category));

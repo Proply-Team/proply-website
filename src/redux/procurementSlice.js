@@ -33,6 +33,18 @@ export const putProcurementAction = createAsyncThunk('procurements/putProcuremen
     return response;
 })
 
+export const putApprovalAction = createAsyncThunk('procurements/putApproval',async (payload,thunkAPI)=>{
+    const response = await service.approve(payload)
+    await thunkAPI.dispatch(getProcurementAction())
+    return response;
+})
+
+export const putRejectAction = createAsyncThunk('procurements/putReject',async (payload,thunkAPI)=>{
+    const response = await service.reject(payload)
+    await thunkAPI.dispatch(getProcurementAction())
+    return response;
+})
+
 
 const procurementSlice = createSlice ({
     name:"procurement",
@@ -68,17 +80,17 @@ const procurementSlice = createSlice ({
     extraReducers: (builder) =>{
         builder.addCase(getProcurementAction.pending, (state) => {
             state.isLoading = true
-        })
+        }),
         builder.addCase(getProcurementAction.fulfilled, (state, {payload}) => {
             state.isLoading = false
 
             state.procs = payload.data
-        })
+        }),
         builder.addCase(getProcurementAction.rejected, (state, {payload}) => {
             state.isLoading = false
             console.log(payload)
             state.message = payload.message
-        })
+        }),
 
         builder.addCase(getProcurementByIdAction.pending, (state) => {
             state.isLoading = true
@@ -94,12 +106,32 @@ const procurementSlice = createSlice ({
 
         builder.addCase(postProcurementAction.pending, (state) => {
             state.isLoading = true
-        })
+        }),
         builder.addCase(postProcurementAction.fulfilled, (state, {payload}) => {
             state.isLoading = false
             state.message = payload.message
-        })
+        }),
         builder.addCase(postProcurementAction.rejected, (state) => {
+            state.isLoading = false
+        }),
+        builder.addCase(putApprovalAction.pending, (state) => {
+            state.isLoading = true
+        }),
+        builder.addCase(putApprovalAction.fulfilled, (state, {payload}) => {
+            state.isLoading = false
+            state.message = payload.message
+        }),
+        builder.addCase(putApprovalAction.rejected, (state) => {
+            state.isLoading = false
+        })
+        builder.addCase(putRejectAction.pending, (state) => {
+            state.isLoading = true
+        }),
+        builder.addCase(putRejectAction.fulfilled, (state, {payload}) => {
+            state.isLoading = false
+            state.message = payload.message
+        }),
+        builder.addCase(putRejectAction.rejected, (state) => {
             state.isLoading = false
         })
     }

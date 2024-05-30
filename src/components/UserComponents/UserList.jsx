@@ -4,6 +4,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectedUser,getUserAction, deleteUserAction } from "../../redux/userSlice";
 import moment from "moment";
+import Loading from "../../animation/Loading";
 
 export default function UserList() {
     const{usrs,isLoading} = useSelector((state)=>state.user)
@@ -13,11 +14,7 @@ export default function UserList() {
     useEffect(()=>{
         dispatch(getUserAction());
     },[dispatch]);
-
-    // if(isLoading) {
-    //     return <Loading/>;
-    // }
-
+    
     const handleDate = (date) =>{
         return moment(date).format('LL');
     }
@@ -30,7 +27,12 @@ export default function UserList() {
         dispatch(selectedUser(user));
         navigate("id");
     }
-        return(
+    
+    if(isLoading) {
+        return <Loading/>;
+    }
+
+    return(
             <div className="d-flex flex-column table-responsive gap-4">
                 <div>
                 <button onClick={()=>handleAdd()} className="btn btn-secondary fw-semibold">

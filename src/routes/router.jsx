@@ -27,6 +27,9 @@ import MenuComponent from "../components/Menu.component";
 import AuthGuard from "../components/Guard/AuthGuard";
 import LayoutMain from "../components/Layouts/LayoutMain/LayoutMain";
 import AuthrozationRoute from "../components/Guard/AuthrozationRoute";
+import Approvement from "../components/ApprovementComponents/Approvement";
+import ApprovementList from "../components/ApprovementComponents/ApprovementList";
+import Approval from "../components/ApprovementComponents/Approval";
 
 
   export const router = createBrowserRouter([
@@ -123,6 +126,20 @@ import AuthrozationRoute from "../components/Guard/AuthrozationRoute";
                         {
                             path: ":id",
                             element: <ProcurementDetail />,
+                        }
+                    ]
+                },
+                {
+                    path: "approvements",
+                    element: <Approvement />,
+                    children: [
+                        {
+                            index:true,
+                            element: <ApprovementList />,
+                        },
+                        {
+                            path: "id",
+                            element: <Approval />,
                         }
                     ]
                 },

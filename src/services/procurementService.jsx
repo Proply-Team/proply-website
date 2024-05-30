@@ -1,8 +1,6 @@
 import { proplyInstance } from "../api/proplyInstance";
 
 function ProcurementService() {
-    let procs = [];
-
     const create = async (proc) =>{
         try{
             console.log(proc)
@@ -37,24 +35,15 @@ function ProcurementService() {
         }
     }
 
-    const update = (proc) =>{
-        return new Promise ((resolve, reject) =>{
-            setTimeout(() => {
-                if (proc) {
-                    procs = procs.map((t)=>{
-                        if(t.id===proc.id) {
-                            return{...proc}
-                        }
-                        return t;
-                    })
-                    resolve("successfully updated procurement")
-                }else {
-                    reject("procurement cannot be blank")
-                }
-            }, 3000);
-        })
+    const approve = async (payload) =>{
+        try {
+            const response = await proplyInstance.put("/procurements/approve", payload)
+            return response.data
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Update failed');
+        }
     }
 
-    return{getAll,create,update, getById}
+    return{getAll,create, approve, getById}
 }
 export default ProcurementService;

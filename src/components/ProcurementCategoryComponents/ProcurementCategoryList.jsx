@@ -3,6 +3,7 @@ import { IconWriting,IconEraser,IconPlus } from "@tabler/icons-react";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectedProcurementCategory, deleteProcurementCategoryAction,getProcurementCategoryAction } from "../../redux/procurementCategorySlice";
+import Loading from "../../animation/Loading";
 
 export default function ProcurementCategoryList() {
     const{proCats,isLoading} = useSelector((state)=>state.procurementCategory)
@@ -14,9 +15,9 @@ export default function ProcurementCategoryList() {
         dispatch(getProcurementCategoryAction());
     },[dispatch]);
 
-    // if(isLoading) {
-    //     return <Loading/>;
-    // }
+    if(isLoading) {
+        return <Loading/>;
+    }
 
     const handleSelectedProcurementCategory = (procurementCategory) =>{
         dispatch(selectedProcurementCategory(procurementCategory));

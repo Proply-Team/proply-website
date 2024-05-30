@@ -32,7 +32,7 @@ export default function ProcurementForm() {
     const {proCats} = useSelector((state)=>state.procurementCategory)
     // const {cats} = useSelector((state)=>state.category)
     const {divs} = useSelector((state) => state.division)
-    const {usrs, usr} = useSelector((state) => state.user)
+    const {usrs, current} = useSelector((state) => state.user)
     const {user} = useSelector((state) => state.auth)
     const {itms} = useSelector((state)=>state.item)
     const dispatch = useDispatch()
@@ -85,7 +85,7 @@ export default function ProcurementForm() {
     const onSubmit = async (data) => {
         data = {
             ...data,
-            userId: usr.userId,
+            userId: current.userId,
             procurementDetailRequests: [
                 ...data.procurementDetailRequests.map(val => {
                     if(typeof val.itemId == 'number'){
@@ -97,6 +97,7 @@ export default function ProcurementForm() {
             ],
             level: data.approvalRequests.length
         }
+        
 
         const res = await dispatch(postProcurementAction(data))
         if(await res?.payload?.statusCode == 201){

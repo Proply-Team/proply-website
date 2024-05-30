@@ -4,6 +4,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectedItem, remove,getItemAction, deleteItemAction } from "../../redux/itemSlice";
 import moment from "moment";
+import Loading from "../../animation/Loading";
 
 export default function ItemList() {
     const{itms,itm,isLoading} = useSelector((state)=>state.item)
@@ -15,19 +16,19 @@ export default function ItemList() {
         dispatch(getItemAction());
     },[dispatch]);
 
-    // if(isLoading) {
-    //     return <Loading/>;
-    // }
-
+    
     const handleSelectedItem = (item) =>{
         dispatch(selectedItem(item));
         navigate("form");
     }
-
+    
     const handleDate = (date) =>{
         return moment(date).format('LL');
     }
-
+    
+    if(isLoading) {
+        return <Loading/>;
+    }
         return(
             <div className="d-flex flex-column table-responsive gap-4">
                 <div>
